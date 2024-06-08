@@ -1,0 +1,129 @@
+﻿@page
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.EquipeGestao.EditModel
+@{
+    Layout = "_Layout-admin";
+    ViewData["Title"] = "Editar membro da Equipe de Gestão";
+    var dados = ViewData["membro"] as Modelos.MembroDireccao;
+}
+
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Editar Membro de Equipe de Gestão</h1>
+        <a class="btn large deep-orange darken-4" asp-page="Index"> <i class="small material-icons">arrow_back</i> Voltar</a>
+        <br /><br />
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div class="row container">
+                <form method="post" enctype="multipart/form-data" class="col s12 container">
+
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="modelo.NomeFuncionario" id="titulo" type="text" class="validate" value="@dados.NomeFuncionario" required>
+                            <label for="titulo">Nome Completo</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchimento Obrigatório</span>
+                        </div>
+                        <div class="input-field col s12">
+                            <input asp-for="modelo.Cargo" value="@dados.Cargo" type="text" class="validate" required>
+                            <label for="titulo">Cargo que Ocupa</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchimento Obrigatório</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input type="hidden" value="@dados.RedesSociais.ID" asp-for="modelo.RedesSociais.ID"/>
+                            <i class="material-icons prefix">facebook</i>
+                            <input asp-for="modelo.RedesSociais.Facebook" value="@dados.RedesSociais.Facebook" id="icon_prefix" type="url" class="validate">
+                            <label for="icon_prefix">Facebook</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">instagram</i>
+                            <input asp-for="modelo.RedesSociais.Instagram" value="@dados.RedesSociais.Instagram" id="icon_telephone" type="url" class="validate">
+                            <label for="icon_telephone">Instagram</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">linkedin</i>
+                            <input asp-for="modelo.RedesSociais.Linkedin" value="@dados.RedesSociais.Linkedin" id="icon_prefix" type="url" class="validate">
+                            <label for="icon_prefix">Linkedin</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">linkedin</i>
+                            <input asp-for="modelo.RedesSociais.Youtube" id="icon_telephone" value="@dados.RedesSociais.Youtube" type="url" class="validate">
+                            <label for="icon_telephone">Youtube</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <img id="thumbnail" src="@dados.Foto.Extensao" style="width:100%" />
+                        </div>
+
+                        <div class="file-field input-field s6 col">
+                            <div class="btn red">
+                                <span><i class="material-icons">panorama</i></span>
+                                <input type="hidden" asp-for="modelo.Foto.ID" value="@dados.Foto.ID"/>
+                                <input id="foto" type="file" asp-for="modelo.Foto.Caminho" accept="image/png, image/jpg, image/jpeg, image/gif, image/tif">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Escolher outra Imagem">
+                            </div>
+                        </div>
+                    </div>
+                 
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="hidden" value="@dados.ID" asp-for="modelo.ID"/>
+                            <button class="btn btn-large orange"> <i class="small material-icons">send</i> Salvar Edição </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const saveButton = document.getElementById('saveButton');
+
+    document.getElementById('foto').addEventListener('change', function (e) {
+        showThumbnail(this.files);
+    });
+
+    function showThumbnail(files) {
+        if (files && files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('thumbnail').src = e.target.result;
+            };
+            reader.readAsDataURL(files[0]);
+            saveButton.disabled = false;
+        }
+    }
+</script>
+
+@section Scripts {
+    @Html.Raw(Html.SweetConfirmAlert("Deletar Funcionário", "Tem certeza que quer deletar este funcionário?"));
+}
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

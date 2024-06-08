@@ -1,0 +1,120 @@
+﻿@page
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Perfil.AccountModel
+@{
+    ViewData["title"] = "Conta";
+    Layout = "_Layout-admin";
+}
+<main>
+    <div class="section container">
+          <form method="post">
+        <div class="row">
+            <div class="col s12 m4">
+                <span class="settings-title">Conta de Acesso Restrito</span>
+                <p>Dados para criação de novo usuário para acesso a funcionalidades internas do portal. Informe correctamente os registros de segurança para evitar acessos desproporcionados. </p>
+            </div>
+            <div class="col s12 m8">
+
+                <div class="settings-group">
+                   
+                    <ul class="collapsible setting">
+                        <li>
+                            <div class="collapsible-header" tabindex="0">
+                                <span>Usuário ou E-mail</span>
+                                <i class="material-icons caret right">keyboard_arrow_right</i>
+                            </div>
+                            <div class="collapsible-body">
+                                <div class="input-field">
+                                    <input id="username" asp-for="Model.RegisterLogin.Usuario" type="text" class="validate" required>
+                                    <label for="username">E-mail</label>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header" tabindex="0">
+                                <span>Senha de Segurança</span>
+                                <i class="material-icons caret right">keyboard_arrow_right</i>
+                            </div>
+                            <div class="collapsible-body">
+                                <div class="input-field">
+                                    <input id="password" asp-for="Model.RegisterLogin.Password" type="Password" class="validate" required>
+                                    <label for="password">Password</label>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header" tabindex="0">
+                                <span>Nivel de Usuário</span>
+                                <i class="material-icons caret right">keyboard_arrow_right</i>
+                            </div>
+                            <div class="collapsible-body">
+                              
+                                    <p>
+                                        <label>
+                                            <input class="with-gap" asp-for="NivelRoot" name="group1" type="radio" checked="" value="true" >
+                                          
+                                            <span>Root</span>
+                                        </label>
+                                        <input type="hidden" asp-for="NivelRoot" value="false" />
+
+                                    </p>
+                                    <p>
+                                        <label>
+                                            <input class="with-gap" asp-for="NivelAdmin" name="group1" type="radio" value="false" >
+                                     
+                                           
+                                            <span>Admin</span>
+                                        </label>
+                                        <input type="hidden" asp-for="NivelAdmin" value="false" />
+                                    </p>
+                               
+                              
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header" tabindex="0">
+                                <span>Dados de Registro</span>
+                                <i class="material-icons caret right">keyboard_arrow_right</i>
+                            </div>
+                            <div class="collapsible-body">
+                                <div class="row">
+                                    <div class="input-field col s8">
+                                        <input id="address" type="text" asp-for="Model.Nome" class="validate" required>
+                                        <label for="address">Nome</label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <input id="city" type="text" asp-for="Model.Sobrenome" class="validate" required>
+                                        <label for="city">Sobrenome</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                      
+                    </ul>
+                   
+                </div>
+
+            </div>
+            <button class="btn large red col s12 m4" type="submit"> Criar Conta</button>
+        </div>
+        </form>
+    </div>
+     
+</main>
+
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

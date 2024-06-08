@@ -1,0 +1,179 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+
+@model ISCED_Benguela.Pages.Register.StudentRegisterModel
+@{
+}
+
+ <!-- Section: Design Block -->
+<section class="text-center text-lg-start">
+  <style>
+    .cascading-right {
+      margin-right: -50px;
+      color:ghostwhite;
+            background: hsla(0, 100%, 0%, 0.55);
+            backdrop-filter: blur(8px);
+      
+    }
+    label{
+        color:hsl(3,100%,0%)!important;
+    }
+
+    @@media (max-width: 991.98px) {
+      .cascading-right {
+                margin-right: 0;
+                margin-top: 50px;
+      }
+      .background-zone{
+          position:fixed;
+          top:0;
+          z-index:-1;
+          height:100%;
+          margin:0;
+          left:0;
+          right:0;
+      }
+      .background-zone img{
+          height:100%;
+                    object-position: bottom;
+                    -o-object-position: bottom;
+                    -o-object-fit: cover;
+                    -object-fit: cover;
+      }
+      section{
+          height:auto;
+      }
+    }
+  </style>
+
+  <!-- Jumbotron -->
+  <div class="container py-2">
+    <div class="row g-0 align-items-center">
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <div class="card cascading-right"> 
+         
+          <div class="card-body p-3 shadow-5 text-center">
+            <h2 class="fw-bold mb-5">Inscrevendo-se como Aluno</h2>
+                        <div class="site-wrap d-md-flex align-items-stretch">
+                            <div class="form-wrap">
+                                <div class="form-inner">
+
+                                    <form method="post" class="pt-3" enctype="multipart/form-data">
+                                 <div class="row">
+                                            <div class="col-md-6 form-floating">
+                                                <input asp-for="estudante.Nome" type="text" required class="form-control" id="nome" placeholder="Nome completo do Estudante">
+                                                <label for="nome">Nome</label>
+                                                <span asp-validation-for="estudante.Nome"></span>
+                                            </div>
+                                            <div class="col-md-6 form-floating">
+                                                <input asp-for="estudante.Sobrenome" required type="text" class="form-control" id="nome" placeholder="Sobrenome">
+                                                <label for="nome">Sobrenome</label>
+                                            </div>
+                                 </div>
+
+                                            <div class="row">
+                                         
+                                            <div class="col-md-6 form-floating">
+                                                <input asp-for="estudante.Bilhete.Numero" required type="text" class="form-control" id="bilhete" placeholder="Nº Bilhete de Identidade">
+                                                <label for="bilhete">Bilhete de Identidade</label>
+                                            </div>
+                                            <div class="col-md-6 form-floating">
+                                                <input asp-for="estudante.Bilhete.Validade" required type="date" class="form-control" id="validadeBilhete" placeholder="Validade">
+                                                <label for="validadeBilhete">Validade</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating">
+                                            <input asp-for="estudante.dataNascimento" required type="date" class="form-control" id="nascimento" placeholder="Data de Nascimento">
+                                            <label for="nascimento">Data de Nascimento</label>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-floating">
+                                                <input asp-for="estudante.Morada.Cidade" type="text" required class="form-control" id="morada" placeholder="Morada do estudante">
+                                                <label for="morada">Morada</label>
+                                               
+                                            </div>
+                                            <div class="col-md-6 form-floating">
+                                                <input asp-for="estudante.Nacionalidade" required type="text" class="form-control" id="nacionalidade" placeholder="Sobrenome">
+                                                <label for="nacionalidade">Nacionalidade</label>
+                                            </div>
+                                        </div>
+                                     
+                                        <div  class="form-outline mb-4 form-floating">
+                                            <select   class="form-select" aria-label="Nenhum" asp-for="estudante.CursosID">
+                                                @foreach (var item in Model.Cursos)
+                                                {
+                                                    <option value="@item.ID">@item.NomeCurso - @item.Formacao.NomeFormacao</option>
+                                                }
+                                           
+                                           
+                                            </select>
+                                            <label>Curso</label>
+                                        </div>
+                                     
+                                        <div class="form-floating">
+                                            <input asp-for="estudante.Contactos.Email" required type="email" class="form-control" id="email" placeholder="info@example.com">
+                                            <label for="email">Correio Electrônico</label>
+                                        </div>
+
+                                        <div class="form-floating">
+                                            <span class="password-show-toggle js-password-show-toggle"><span class="uil"></span></span>
+                                            <input asp-for="estudante.RegisterLogin.Password" required type="password" class="form-control" id="password" placeholder="Password">
+                                            <label for="password">Palavra-Passe</label>
+                                        </div>
+                                          <hr />
+                                        <div class=" mb-4 form-floating">
+                                            <input id="foto" asp-for="estudante.Avatar.Caminho" class="form-control" placeholder="Foto de Perfil" />
+                                            <label class="btn" for="foto">Escolher Foto</label>
+                                        </div>
+                                        <!-- Checkbox -->
+                                        <div class="form-check d-flex justify-content-center mb-4 ">
+                                            <input class="form-check-input me-2" type="checkbox" value="true" id="form2Example8" asp-for="TermoAccept" />
+                                            <input type="hidden" value="false" asp-for="TermoAccept" />
+
+                                            <label class="form-check-label" for="form2Example8">
+                                                Concordar com nossos termos e participar em nossa newsletter
+                                            </label>
+                                        </div>
+                                        <div class="d-grid mb-4">
+                                            <button type="submit" class="btn btn-primary">Registrar Agora</button>
+                                        </div>
+
+                                    </form>
+                                    
+                                    </div>
+                                 
+
+                                </div>
+                                </div>
+                        
+                            </div>
+                        </div>
+          </div>
+      
+            <div class="col-lg-6 mb-5 mb-lg-0 background-zone">
+                <img src="https://stories.isu.pub/74428413/images/23_original_file_I1.jpg" class="w-100 rounded-4 shadow-4"
+                     alt="" />
+            </div>
+      </div>
+      </div>
+  <!-- Jumbotron -->
+    @{
+        if (TempData["successAlert"] is not null)
+        {
+            if ((bool)TempData["successAlert"])
+            {
+                @Html.Raw(Html.SweetAlert("Sua Inscrição foi feita com sucesso", "Cadastro de Aluno", alertType.success))
+                ;
+            }
+            else
+            {
+                @Html.Raw(Html.SweetAlert("Sua Inscrição Não foi feita, por favor, verifique seus dados", "Cadastro de Aluno", alertType.error))
+                ;
+            }
+
+        }
+    }
+</section>
+
+<!-- Section: Design Block -->

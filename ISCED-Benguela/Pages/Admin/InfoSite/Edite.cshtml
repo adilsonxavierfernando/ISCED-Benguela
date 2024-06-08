@@ -1,0 +1,112 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.InfoSite.EditeModel
+@{
+    Layout = "_Layout-admin";
+}
+
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Informações do Site</h1>
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Editar Informações da Noticia</h6>
+        </div>
+        <div class="card-body">
+            <div class="row container">
+                <form method="post" class="col s12 container">
+
+                    <input type="hidden" value="@Model.ModeloView.ID" asp-for="ModeloView.ID" />
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="@Model.ModeloView.Geomap" value="@Model.ModeloView.Geomap" id="titulo" type="text" class="validate" required>
+                            <label for="titulo">Mapa</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input type="hidden" value="@Model.ModeloView.Contacto.ID" asp-for="@Model.ModeloView.Contacto.ID"/>
+                            <input asp-for="ModeloView.Contacto.Email" id="titulo" value="@Model.ModeloView.Contacto.Email" type="email" class="validate" required>
+                            <label for="titulo">Email</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input asp-for="ModeloView.Contacto.Telefone" value="@Model.ModeloView.Contacto.Telefone" id="titulo" type="tel" class="validate" required>
+                            <label for="titulo">Telefone</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col-6 s12">
+                            <input asp-for="ModeloView.Endereco.Cidade" value="@Model.ModeloView.Endereco.Cidade" id="titulo" type="text" class="validate" required>
+                            <label for="titulo">Cidade</label>
+                        </div>
+                        <div class="input-field col-6 s12">
+                            <input type="hidden" asp-for="ModeloView.Endereco.ID" value="@Model.ModeloView.Endereco.ID"/>
+                            <input asp-for="ModeloView.Endereco.Bairro" id="titulo" value="@Model.ModeloView.Endereco.Bairro" type="text" class="validate" required>
+                            <label for="titulo">bairro</label>
+                        </div>
+                        <div class="input-field col-12 s12">
+                            <input asp-for="ModeloView.Endereco.Localizacao" id="titulo" value="@Model.ModeloView.Endereco.Localizacao" type="text" class="validate" required>
+                            <label for="titulo">Localização</label>
+                        </div>
+                    </div>
+                    <!--Redes Sociais-->
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">facebook</i>
+                            <input asp-for="ModeloView.Redes.Facebook" value="@Model.ModeloView.Redes.Facebook" id="icon_prefix" type="url" class="validate">
+                            <label for="icon_prefix">Facebook</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">instagram</i>
+                            <input asp-for="ModeloView.Redes.Instagram" value="@Model.ModeloView.Redes.Instagram" id="icon_telephone" type="url" class="validate">
+                            <label for="icon_telephone">Instagram</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <input type="hidden" asp-for="ModeloView.RedesID" value="@Model.ModeloView.RedesID"/>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">linkedin</i>
+                            <input asp-for="ModeloView.Redes.Linkedin" value="@Model.ModeloView.Redes.Linkedin" id="icon_prefix" type="url" class="validate">
+                            <label for="icon_prefix">Linkedin</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">linkedin</i>
+                            <input asp-for="ModeloView.Redes.Youtube" value="@Model.ModeloView.Redes.Youtube" id="icon_telephone" type="url" class="validate">
+                            <label for="icon_telephone">Youtube</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button class="btn btn-large red pulse">Salvar Modificação</button>
+                        </div>
+                    </div>
+                   <script>
+                        var $toastContent = $('<span>I am toast content</span>').add($('<button class="btn-flat toast-action">Undo</button>'));
+                        Materialize.toast($toastContent, 10000);
+                   </script>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @{
+        if (TempData["successAlert"] is not null)
+        {
+            if ((bool)TempData["successAlert"]!)
+            {
+                @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+                ;
+            }
+            else
+            {
+                @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+                ;
+            }
+
+        }
+    }
+</div>

@@ -1,0 +1,99 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.EquipeGestao.ChangeModel
+@{
+
+    Layout = "_Layout-admin";
+    ViewData["Title"] = "Criar Equipe de Gestão";
+
+}
+
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Criar Membro de Equipe de Gestão</h1>
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+        
+        <div class="card-body">
+            <div class="row container">
+                <form method="post" enctype="multipart/form-data" class="col s12 container">
+
+                    
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="memberDTO.NomeFuncionario" id="titulo" type="text" class="validate" required>
+                            <label for="titulo">Nome Completo</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchiemtno Obrigatório</span>
+                        </div>
+                        <div class="input-field col s12">
+                            <input asp-for="memberDTO.Cargo" type="text" class="validate" required>
+                            <label for="titulo">Cargo que Ocupa</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchiemtno Obrigatório</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">facebook</i>
+                            <input asp-for="memberDTO.RedesSociais.Facebook" id="icon_prefix" type="url" class="validate">
+                            <label for="icon_prefix">Facebook</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">instagram</i>
+                            <input asp-for="memberDTO.RedesSociais.Instagram" id="icon_telephone" type="url" class="validate">
+                            <label for="icon_telephone">Instagram</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">linkedin</i>
+                            <input asp-for="memberDTO.RedesSociais.Linkedin" id="icon_prefix" type="url" class="validate">
+                            <label for="icon_prefix">Linkedin</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">linkedin</i>
+                            <input asp-for="memberDTO.RedesSociais.Youtube" id="icon_telephone" type="url" class="validate">
+                            <label for="icon_telephone">Youtube</label>
+                        </div>
+                    </div>
+                    <div class="file-field input-field">
+                        <div class="btn red">
+                            <span><i class="material-icons">panorama</i></span>
+                            <input type="file" asp-for="memberDTO.Foto.Caminho" accept="image/png, image/jpg, image/jpeg, image/gif, image/tif" required>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Escolher Imagem">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button class="btn btn-large orange"> <i class="small material-icons">send</i> Salvar </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Html.Raw(Html.SweetConfirmAlert("Deletar Funcionário", "Tem certeza que quer deletar este funcionário?"));
+}
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

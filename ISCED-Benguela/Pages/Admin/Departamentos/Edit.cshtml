@@ -1,0 +1,117 @@
+﻿@page
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Departamentos.EditModel
+@{
+    Layout = "_Layout-admin";
+    ViewData["title"] = "Editar Departamento";
+
+    var dados = ViewData["departamento"] as Modelos.Departamentos;
+    var membros = ViewData["membros"] as List<Modelos.MembroDireccao>;
+}
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Editar Departamento</h1>
+        <a class="btn large deep-orange darken-4" asp-page="Index"> <i class="small material-icons">arrow_back</i> Voltar</a>
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div class="row container">
+                <form method="post" class="col s12 container">
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="modelo.NomeDepartamento" id="titulo" value="@dados.NomeDepartamento" type="text" class="validate" required>
+                            <label for="titulo">Nome do Departamento</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchimento Obrigatório</span>
+                        </div>
+                        <div class="input-field col s12">
+                            <textarea asp-for="modelo.Descricao"  type="text" class="materialize-textarea validate" id="descricao" required>@dados.Descricao</textarea>
+                            <label for="titulo">Descrição do Departamento</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchimento Obrigatório</span>
+                        </div>
+                    </div>
+                    <div class="input-field col s12">
+                        <select id="disciplinas" asp-for="modelo.ChefedepartamentoID">
+                            <option value="" disabled selected>Escolher funcionario</option>
+                            @foreach (var item in membros)
+                            {
+                                if (item.ID==dados.ChefedepartamentoID)
+                                {
+                                    <option value="@item.ID" selected>@item.NomeFuncionario  >  @item.Cargo</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.ID">@item.NomeFuncionario  >  @item.Cargo</option>
+                                }
+                               
+                                
+                            }
+                        </select>
+                        <label for="disciplinas">Chefe do Depratamento</label>
+                    </div>
+                    <div class="input-field col">
+                        <p>
+                            <label>
+                                @* <input type="hidden" asp-for="modelo.isPrincipal" value="false" /> *@
+                                @if (@dados.isPrincipal)
+                                {
+                                    <input type="checkbox" asp-for="modelo.isPrincipal"  checked="checked"/>
+                                    <span>Activar Como Principal</span>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" asp-for="modelo.isPrincipal"/>
+                                
+                                    <span>Activar Como Principal</span>
+                                }
+                               
+
+                              
+                            </label>
+                    
+                        </p>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button class="btn btn-large orange"> <i class="small material-icons">send</i> Salvar Edição </button>
+                            <input type="hidden" asp-for="modelo.ID" value="@dados.ID"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+   
+        var textarea = document.getElementById('descricao');
+        textarea.value = '@Html.Raw(@dados.Descricao)';
+        M.textareaAutoResize(textarea);  // Recalcula o tamanho do textarea
+   
+</script>
+
+@section Scripts {
+    @Html.Raw(Html.SweetConfirmAlert("Deletar Funcionário", "Tem certeza que quer deletar este funcionário?"));
+}
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

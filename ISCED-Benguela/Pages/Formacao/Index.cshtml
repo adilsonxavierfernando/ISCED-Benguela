@@ -1,0 +1,66 @@
+﻿@page
+@model ISCED_Benguela.Pages.Cursos.IndexModel
+@{
+}
+<main id="main" data-aos="fade-in">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
+            @if(string.IsNullOrEmpty(Model.DepartamentoActual))
+            {
+            <h2>@Model.modelFormacao.NomeFormacao</h2>
+            <p>Nossos cursos de @Model.modelFormacao.NomeFormacao! Com melhores planos curriculares. </p>
+            }else{
+            <h2>@Model.DepartamentoActual</h2>
+            <p>O  @Model.DepartamentoActual é constituído pelos seguintes cursos. </p>
+            }
+         
+        </div>
+    </div><!-- End Breadcrumbs -->
+    <!-- ======= Courses Section ======= -->
+    <section id="courses" class="courses">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row" data-aos="zoom-in" data-aos-delay="100">
+                @if(Model.lstCursos!=null && Model.lstCursos.Count>0){
+                    @foreach (var item in Model.lstCursos)
+                    {
+                        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                            <div class="course-item">
+                                <img src="@item.CapaCurso.Extensao" class="img-fluid" alt="...">
+                                <div class="course-content">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h4>@item.Departamento.NomeDepartamento</h4>
+                                        @{
+                                            var nome = item.NomeCurso + ".pdf";
+                                        }
+                                        <p class="price"><a href="@item.ArquivoCurso.Extensao" download="@nome">Baixar Grade</a></p>
+                                    </div>
+
+                                    <h3><a asp-page="/Formacao/CursoDetalhe" asp-route-id="@item.ID">@item.NomeCurso</a></h3>
+                                    <p>@item.Descricao.</p>
+                                    @if(item.Departamento.ChefeDepartamento!=null){
+                                        <div class="trainer d-flex justify-content-between align-items-center">
+                                            <div class="trainer-profile d-flex align-items-center">
+                                                <img src="@item.Departamento.ChefeDepartamento.Foto.Extensao" class="img-fluid" alt="">
+                                                <span><b>Chefe Depº: </b>@item.Departamento.ChefeDepartamento.NomeFuncionario</span>
+                                            </div>
+                                        </div>
+                                    }
+                                  
+                                </div>
+                            </div>
+                        </div> <!-- End Course Item-->
+                    }
+                }
+                else
+                {
+                    <h5 class="text-center">Nada Para Mostrar...</h5>
+                }
+            </div>
+
+        </div>
+    </section><!-- End Courses Section -->
+
+</main><!-- End #main -->

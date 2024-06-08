@@ -1,0 +1,252 @@
+﻿@page
+@using System.Text.Json
+@model ISCED_Benguela.Pages.Admin.IndexModel
+@{
+    Layout = "_Layout-admin";
+    ViewData["title"] = "Administração";
+    var dataPoints = new List<int> { 10, 20 };
+    var jsonData = JsonSerializer.Serialize(dataPoints);
+}
+
+
+<div class="container">
+    <div class="masonry row">
+        <div class="col s12">
+            <h2>Dashboard</h2>
+
+        </div>
+        @if (User.IsInRole("Professor"))
+        {
+            <div class="col  s12">
+                <a asp-page="/Admin/Materia/Index" class="d-none d-sm-inline-block btn btn-sm fa-sm deep-orange darken-3 shadow-sm">
+                    <i class="fas large fa-plus  text-white-50"></i> Matérias Publicadas
+                </a>
+                <hr />
+            </div>
+        }
+
+        <div class="col l3 m6 s12">
+
+            <div class="card">
+                <div class="card-stacked">
+                    <div class="card-metrics card-metrics-static">
+                        <div class="card-metric">
+                            <div class="card-metric-title">Alunos Inscritos</div>
+                            <div class="card-metric-value">@Model.EstudanteList.Count</div>
+                            <div class="card-metric-change increase">
+                                <i class="material-icons left">keyboard_arrow_up</i>
+                                @{
+                                    decimal percentagem = (Model.EstudanteList.Count() / 2000) * 100;
+                                    Html.Raw(percentagem + "%");
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-chart">
+                    <canvas id="flush-area-chart-blue" height="100"></canvas>
+                </div>
+            </div>
+
+        </div>
+        <div class="col l3 m6 s12">
+
+            <div class="card">
+                <div class="card-stacked">
+                    <div class="card-metrics card-metrics-static">
+                        <div class="card-metric">
+                            <div class="card-metric-title">Materias Publicadas</div>
+                            <div class="card-metric-value">@Model.MateriaList.Count()</div>
+                            <div class="card-metric-change increase">
+                                <i class="material-icons left">keyboard_arrow_up</i>
+                                @{
+                                    decimal percentagemM = (Model.MateriaList.Count() / 2000) * 100;
+                                    Html.Raw(percentagemM + "%");
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-chart">
+                    <canvas id="flush-area-chart-yellow" height="100"></canvas>
+                </div>
+            </div>
+
+        </div>
+        <div class="col l3 m6 s12">
+
+            <div class="card">
+                <div class="card-stacked">
+                    <div class="card-metrics card-metrics-static">
+                        <div class="card-metric">
+                            <div class="card-metric-title">Cursos Cadastrados</div>
+                            <div class="card-metric-value">@Model.CursoList.Count()</div>
+                            <div class="card-metric-change decrease">
+                                <i class="material-icons left">keyboard_arrow_down</i>
+                                @{
+                                    decimal percentagemC = (Model.CursoList.Count() / 3000) * 100;
+                                    Html.Raw(percentagemC + "%");
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-chart">
+                    <canvas id="flush-area-chart-pink" height="100"></canvas>
+                </div>
+            </div>
+
+        </div>
+        <div class="col l3 m6 s12">
+
+            <div class="card">
+                <div class="card-stacked">
+                    <div class="card-metrics card-metrics-static">
+                        <div class="card-metric">
+                            <div class="card-metric-title">Professores Inscritos</div>
+                            <div class="card-metric-value">@Model.CursoList.Count()</div>
+                            <div class="card-metric-change decrease">
+                                <i class="material-icons left">keyboard_arrow_down</i>
+                                @{
+                                    decimal percentagemP = (Model.ProfessoresList.Count() / 20) * 100;
+                                    Html.Raw(percentagemP + "%");
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-chart">
+                    <canvas id="flush-area-chart-green" height="100"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col s12">
+
+            <div class="card">
+                <div class="card-metrics card-metrics-toggle card-metrics-centered">
+                    <div class="card-metric waves-effect active" data-metric="revenue">
+                        @{
+                            var count1 = Model.ComentariosList != null ? Model.ComentariosList.ToList().Count : 0;
+                            decimal percentagemPp = count1 * 100;
+                            Html.Raw(percentagemPp + "%");
+                        }
+                        <div class="card-metric-title">Interações de Alunos</div>
+                        <div class="card-metric-value">@count1</div>
+                        <div class="card-metric-change">
+                            <i class="material-icons">keyboard_arrow_up</i>
+                          
+                              @{
+                                Html.Raw(percentagemPp + "%");
+                              }
+                        </div>
+                    </div>
+                    <div class="card-metric waves-effect" data-metric="users">
+                        <div class="card-metric-title">Respostas a Dúvidas</div>
+                        <div class="card-metric-value">@count1</div>
+                        <div class="card-metric-change">
+                            <i class="material-icons">keyboard_arrow_up</i>
+                            @{
+                                Html.Raw(percentagemPp + "%");
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <canvas class="card-chart" id="main-toggle-line-chart" width="400" height="400"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="col m6 s12">
+            <div class="card horizontal">
+                <div class="card-stacked">
+                    <div class="card-metrics">
+                        @{
+                            var count = @Model.MateriaList.Where(x => x.DataPublicacao.Date == DateTime.UtcNow.Date) != null ? @Model.MateriaList.Where(x => x.DataPublicacao.Date == DateTime.UtcNow.Date).Count() : 0;
+                            decimal percentagemPppp = (count / 100) * 100;
+                            
+                        }
+                        <div class="card-metric waves-effect active">
+                            <div class="card-metric-title">Publicações de Hoje</div>
+                            <div class="card-metric-value">@count</div>
+                            <div class="card-metric-change">
+                                <i class="material-icons left">keyboard_arrow_up</i>
+                                @{
+                                    Html.Raw(percentagemPppp + "%");
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <canvas id="mini-line-chart" width="100%" height="100%"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col m6 s12">
+            <div class="card horizontal">
+                <div class="card-stacked">
+                    <div class="card-metrics">
+                        <div class="card-metric waves-effect active">
+                            @{
+                                var count2 = Model.ComentariosList?.Where(x => x.DataCriacao.Date == DateTime.UtcNow.Date) != null ? @Model.ComentariosList.Where(x => x.DataCriacao.Date == DateTime.UtcNow.Date).ToList().Count() : 0;
+
+                                decimal percentagemPpppp = (count2 / 100) * 100;
+                                    Html.Raw(percentagemPpppp + "%");
+                            }
+                            <div class="card-metric-title">Duvidas de Hoje</div>
+                            <div class="card-metric-value">@count2</div>
+                            <div class="card-metric-change">
+                                <i class="material-icons left">keyboard_arrow_up</i>
+                                @{
+                                    Html.Raw(percentagemPpppp + "%");
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <canvas id="mini-stacked-bar-chart" width="100%" height="100%"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+ @section Scripts{
+    <script>
+
+        var dataPoints = @Html.Raw(jsonData); // Convertendo os dados JSON para um array JavaScript
+
+        var ctx = document.getElementById('mini-stacked-bar-chart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    data: dataPoints,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+ }
+

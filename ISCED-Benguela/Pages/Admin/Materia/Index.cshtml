@@ -1,0 +1,77 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Materia.IndexModel
+@{
+    Layout = "_Layout-admin";
+    ViewData["title"] = "Matérias Publicadas";
+    var Dados = (List<Modelos.Materia>)ViewData["Materias"]!;
+}
+<section class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Matérias que já Publicou</h1>
+    </div>
+    <div class="fixed-action-btn">
+        <a class="btn btn-floating pulse waves-effect waves-light deep-orange darken-4" asp-page="/Admin/Materia/InsertNovo"><i class="material-icons">add</i></a>
+    </div>
+
+    <table class="responsive-table highlight card-panel" id="dataTable1">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Titulo</th>
+                <th scope="col">Data da Publicação</th>
+                <th scope="col">Opções</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Dados)
+            {
+                <tr>
+                    <th scope="row">@item.ID</th>
+                    <td>@item.Titulo</td>
+                    <td>@item.DataPublicacao</td>
+                    <td class="row gp-2">
+                        @if(@item.Visivel){
+                            <a data-position="bottom" data-delay="50" data-tooltip="Parar Visibilidade da Matéria" asp-route-id="@item.ID" asp-route-estado="@item.Visivel" asp-page-handler="Stop" class="btn col red darken-4 accent-4 white-text tooltipped"><i class="small material-icons">stop</i></a>
+                        }
+                        else
+                        {
+                            <a data-position="bottom" data-delay="50" data-tooltip="Publicar Matéria" asp-route-id="@item.ID" asp-route-estado="@item.Visivel" asp-page-handler="Stop" class="btn tooltipped col green darken-4 accent-4 white-text"><i class="small material-icons">publish</i></a>
+                        }
+
+
+                        <a data-position="bottom" data-delay="50" data-tooltip="Deletar Matéria" asp-route-id="@item.ID" asp-page-handler="Delete" class="btn tooltipped col red accent-4 white-text"><i class="small material-icons">delete</i></a>
+
+                        <a data-position="bottom" data-delay="50" data-tooltip="Editar Matéria" asp-page="/Admin/Materia/EditMateria" asp-route-id="@item.ID" class="btn tooltipped col white "><i class="small material-icons green-text">edit</i></a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</section>
+@section Scripts {
+    @Html.Raw(Html.SweetConfirmAlert("Deletar Matéria", "Tem certeza que quer deletar esta Matéria?"));
+}
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Professor", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Professor", alertType.error))
+            ;
+        }
+
+    }
+}
+
+

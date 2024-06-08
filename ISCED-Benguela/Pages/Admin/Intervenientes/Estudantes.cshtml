@@ -1,0 +1,104 @@
+﻿@page
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Intervenientes.EstudantesModel
+@{
+    Layout = "_Layout-admin";
+    ViewData["title"] = "Estudantes Cadastrados";
+}
+
+<!-- Begin Page Content -->
+<section class="container">
+    <!-- DataTales Example -->
+      <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Registro de Estudantes</h1>
+        </div>
+                <table class="responsive-table highlight card-panel" id="dataTable1" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NOME</th>
+                            <th>SOBRENOME</th>
+                            <th>IDADE</th>
+                            <th>CURSO</th>
+                            <th>ESTADO</th>
+                            <th>Opcões</th>
+                        </tr>
+                    </thead>
+                  
+                    <tbody>
+                        
+                        @foreach(var item in Model.lstEstudantes){
+                             int idade = DateTime.Now.Date.Year - @item.dataNascimento.Date.Year;
+                            <tr>
+
+                   
+                    <td>@item.ID</td>
+                            <td>@item.Nome</td>
+                            <td>@item.Sobrenome</td>
+                            <td><span>±</span> @idade anos</td>
+                             <td>@item.Curso.NomeCurso</td>
+                    @if (@item.Aprovado)
+                    {
+                        <td><span class="green-text">Aprovado</span></td>
+                    }
+                    else
+                    {
+                         <td><a asp-page-handler="Approve" asp-route-id="@item.ID" data-position="bottom" data-delay="50" data-tooltip="Aprovar Inscrição de Aluno"  class="btn tooltipped green padding white-text"><i class="bi bi-person-fill-down"></i> Aprovar</a></td> 
+                    }
+                   
+                    <td>
+                        @if(item.Aprovado){
+                            if (@item.Bloqueado)
+                            {
+                                <a data-position="bottom" data-delay="50" data-tooltip="Desbloquear Estudante" asp-route-id="@item.ID" asp-route-estado="@item.Bloqueado" asp-page-handler="Stop" class="btn col green accent-4 white-text tooltipped"><i class="small material-icons">do_not_disturb_on</i></a>
+                            }
+                            else
+                            {
+                                <a data-position="bottom" data-delay="50" data-tooltip="Bloquear Estudante" asp-route-id="@item.ID" asp-route-estado="@item.Bloqueado" asp-page-handler="Stop" class="btn tooltipped col red darken-4 accent-4 white-text"><i class="small material-icons">do_not_disturb_off</i></a>
+                            }
+
+                        }
+
+
+                        <a data-position="bottom" data-delay="50" data-tooltip="Deletar Estudante" asp-route-id="@item.ID" onclick="confirmDelete(this,@item.ID,'Delete')" asp-page-handler="Delete" class="btn tooltipped col red accent-4 white-text"><i class="small material-icons">delete</i></a>
+
+                    </td>
+                     </tr>
+                        }
+       
+                
+                    
+                    </tbody>
+        <tfoot>
+            <tr>
+                <th>#</th>
+                <th>NOME</th>
+                <th>SOBRENOME</th>
+                <th>IDADE</th>
+                <th>CURSO</th>
+                <th>ESTADO</th>
+                <th>Opcões</th>
+            </tr>
+        </tfoot>
+                </table>
+</section>
+<!-- /.container-fluid -->
+@section Scripts {
+    @Html.Raw(Html.SweetConfirmAlert("Deletar Estudante", "Tem certeza que quer deletar este Estudante?"));
+}
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

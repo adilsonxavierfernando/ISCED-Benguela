@@ -1,0 +1,374 @@
+﻿@page
+@using ISCED_Benguela.Data.Repository
+@model IndexModel
+@{
+    ViewData["Title"] = "Página Inicial";
+    Layout = "_Layout";
+}
+
+ <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex justify-content-center align-items-center">
+    <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
+      <h1>Aprenda Hoje,<br>Lidere Amanha</h1>
+      <h2>Comece hoje uma jornada de aprendizagem com nossos melhores educadores</h2>
+      <a asp-page="/Materias/Index" class="btn-get-started">Iniciar Treinamento</a>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+            <img src="~/img/imagem 2.jpg" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
+            <h3>Porque nos escolher?</h3>
+            <p class="fst-italic">
+            Com anos de tradição e excelência acadêmica, nos orgulhamos de ser uma referência em ensino superior de ciencias de educação da província, comprometidos em proporcionar aos nossos estudantes uma experiência transformadora durante sua jornada educacional..
+            </p>
+            <ul>
+              <li><i class="bi bi-check-circle"></i> Excelência Acadêmica.</li>
+              <li><i class="bi bi-check-circle"></i> Ambiente Inovador.</li>
+              <li><i class="bi bi-check-circle"></i> Apoio ao Aluno</ul>
+            <p>
+              Junte-se a nós nessa jornada enriquecedora de conhecimento e crescimento pessoal. Estamos ansiosos para fazer parte do seu sucesso acadêmico e profissional!
+            </p>
+
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+    <!-- ======= Counts Section ======= -->
+    <section id="counts" class="counts section-bg">
+      <div class="container">
+
+        <div class="row counters">
+
+          <div class="col-lg-3 col-6 text-center">
+            <span data-purecounter-start="0" data-purecounter-end="@Model.EstudanteList.Count()" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Estudantes</p>
+          </div>
+
+          <div class="col-lg-3 col-6 text-center">
+                    <span data-purecounter-start="0" data-purecounter-end="@Model.CursoList.Count()" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Cursos</p>
+          </div>
+
+          <div class="col-lg-3 col-6 text-center">
+                    <span data-purecounter-start="0" data-purecounter-end="@Model.MateriaList.Count()" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Matérias</p>
+          </div>
+
+          <div class="col-lg-3 col-6 text-center">
+                    <span data-purecounter-start="0" data-purecounter-end="@Model.ProfessoresList.Count()" data-purecounter-duration="1" class="purecounter"></span>
+            <p>Professores</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Counts Section -->
+
+    <!-- ======= Why Us Section ======= -->
+    <section id="why-us" class="why-us">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+         
+                @foreach (var item in Model.DepartamentoList.Where(x => x.isPrincipal))
+                    {
+                    <div class="col-lg-4 d-flex align-items-stretch">
+                        <div class="content">
+                            <i class="bi bi-infinity"></i>
+                            <h3>@item.NomeDepartamento.ToUpper()</h3>
+                            <p>
+                                @item.Descricao
+                            </p>
+                            <div class="text-center">
+                                <a asp-area="Materia" asp-page="/Materias/index" asp-route-id="@item.ID" class="more-btn">Materias <span class="bx bx-chevron-right"></span></a>
+                                <a asp-area="Formacao" asp-page="/Formacao/index" asp-page-handler="Departamento" asp-route-id="@item.ID" class="more-btn">Cursos <span class="bx bx-chevron-right"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                }
+              
+                
+               
+                    <div class="col-lg-8 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="icon-boxes d-flex flex-column justify-content-center">
+                            <div class="row">
+                            @foreach (var item in Model.DepartamentoList.Where(x => !x.isPrincipal))
+                            {
+                                <div class="col-6 d-flex align-items-stretch">
+                                    <div class="icon-box mt-4 mt-xl-0">
+                                        <i class="bi bi-book"></i>
+                                        <br /> <br /><br />
+                                        <h4>@item.NomeDepartamento.ToUpper()</h4>
+                                        <p>@item.Descricao</p>
+                                        <div class="text-center">
+                                            <a asp-area="Materia" asp-page="/Materias/index" asp-route-id="@item.ID" class="more-btn">Materias <span class="bx bx-chevron-right"></span></a>
+                                            <a asp-area="Formacao" asp-page="/Formacao/index" asp-page-handler="Departamento" asp-route-id="@item.ID" class="more-btn">Cursos <span class="bx bx-chevron-right"></span></a>
+                                        </div>
+                                    </div>
+                              
+                                </div>
+                            }
+                            </div>
+                        </div><!-- End .content-->
+                    </div>
+           
+                </div>
+       
+         
+        </div>
+
+    
+    </section><!-- End Why Us Section -->
+
+    <!-- Swiper -->
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+           
+            @foreach (var item_f in Model.FormacaoList)
+            {
+                <div class="swiper-slide">
+                    <!-- ======= Features Section ======= -->
+                    <section id="features" class="features">
+                        <div class="container" data-aos="fade-up">
+                            <br />
+
+                            <div class="row" data-aos="zoom-in" data-aos-delay="100">
+                                <div class="section-title">
+                                    <h2>Grade Curricular</h2>
+                                    <p>Cursos de @item_f.NomeFormacao</p>
+                                </div>
+                                @foreach (var item in Model.CursoList.Where(x=>x.FormacaoID==item_f.ID))
+                                {
+                                    <div class="col-lg-4 col-md-4 mt-4">
+                                        <div class="icon-box">
+                                            <i class="bi bi-infinity" style="color: #4233ff;"></i>
+                                            <h3><a asp-page="/Formacao/CursoDetalhe" asp-route-id="@item.ID">@item.NomeCurso</a></h3>
+                                            @if(!item.Ativo){
+                                            <span class="clips-brevemente">Brevemente</span>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                @if (Model.CursoList.Where(x => x.FormacaoID == item_f.ID) == null || Model.CursoList.Where(x => x.FormacaoID == item_f.ID).Count()<=0)
+                                {
+                                    <div class="col-lg-12 col-md-4 mt-4">
+                                    <h2 class="text-center text-danger">Brevemente!</h2>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </section><!-- End Features Section -->
+                </div>
+            }
+           
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+    </div>
+    
+
+    <!-- ======= Popular Courses Section ======= -->
+    <section id="popular-courses" class="courses">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>matérias</h2>
+          <p>Treinamentos Recentes</p>
+        </div>
+
+        <div class="row" data-aos="zoom-in" data-aos-delay="100">
+          @foreach (var item in Model.MateriaList.Where(x=>x.Departamentos.isPrincipal).Take(3).OrderByDescending(x=>x.DataPublicacao))
+                {
+                    var resumido = item.Conteudo.Length > 100 ? item.Conteudo.Substring(0, 100) : item.Conteudo;
+                    string dataFormatada = item.DataPublicacao.ToString("dd 'de' MMMM 'de' yyyy");
+                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                        
+                        <div class="course-item">
+                            
+                             @if (item.Capa != null)
+                            {
+                                if (item.Capa.Ficheiro != null)
+                                {
+                                    <img  src="@item.Capa.Extensao" class="img-fluid capa" alt="">
+                                }
+                                else
+                                {
+                                    <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                }
+                            }
+                            else
+                            {
+                                <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                            }
+
+                            <div class="course-content">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4>@item.Disciplina.NomeDisciplina</h4>
+                                    <p class="price">@dataFormatada</p>
+                                </div>
+
+                                <h3><a asp-area="" asp-page="\Materias\Detalhe" asp-route-id="@item.ID">@item.Titulo</a></h3>
+                                <p>@Html.Raw(resumido)</p>
+                              
+                            </div>
+                            <div class="trainer d-flex justify-content-between align-items-center">
+                                <div class="trainer-profile d-flex align-items-center">
+                                     @if (item.Professor.Foto != null)
+                                {
+                                if (item.Professor.Foto.Ficheiro != null)
+                                {
+                                <img src="@item.Professor.Foto.Extensao" class="img-fluid" alt="">
+                                }
+                                else
+                                {
+                                <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                }
+                                }
+                                else
+                                {
+                                <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                }
+
+                                    <span>Profº @item.Professor.Nome @item.Professor.Sobrenome</span>
+                                </div>
+                                <div class="trainer-rank d-flex align-items-center">
+
+                                    @if (item.Comentarios != null)
+                                    {
+                                        <span>
+                                            <i class="bi bi-eye"></i>
+                                            &nbsp
+
+                                            @Html.Raw(item.Comentarios.Count)
+                                            &nbsp
+                                        </span>
+                                    }
+                                </div>
+
+                            </div>
+            
+                        </div> 
+
+                    </div> <!-- End Course Item-->
+                }
+         
+
+        </div>
+         <a asp-page="/Materias/Index" asp-area="home">Ver mais...</a>
+      </div>
+    </section><!-- End Popular Courses Section -->
+
+    <!-- ======= Trainers Section ======= -->
+    <section id="trainers" class="trainers">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>PROFESSORES</h2>
+          <p>Nossos Professores Disponiveis</p>
+        </div>
+        <div class="row" data-aos="zoom-in" data-aos-delay="100">
+
+            @foreach (var item in Model.ProfessoresList)
+                {
+                  
+                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                        <div class="member">
+                            @if (item.Foto != null)
+                            {
+                                if (item.Foto.Ficheiro != null)
+                                {
+                                    <img src="@item.Foto.Extensao" class="img-fluid" alt="">
+                                }
+                                  else
+                                {
+                                    <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                }
+                            }
+                            else
+                            {
+                                <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                            }
+                         
+                            <div class="member-content">
+                                <h4>@item.Nome @item.Sobrenome</h4>
+                                <span>@item.Departamentos.NomeDepartamento</span>
+                                <p>
+                                   @item.Bibliografia
+                                </p>
+                                @if (item.Redes != null)
+                                {
+                                    <div class="social">
+                                        <a href="@item.Redes.Youtube"><i class="bi bi-youtube"></i></a>
+                                        <a href="@item.Redes.Facebook"><i class="bi bi-facebook"></i></a>
+                                        <a href="@item.Redes.Instagram"><i class="bi bi-instagram"></i></a>
+                                        <a href="@item.Redes.Linkedin"><i class="bi bi-linkedin"></i></a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                }
+        </div>
+            <a asp-page="/Membership/Index" asp-area="professor" asp-route-zona="professor">Ver mais...</a>
+      </div>
+     
+    </section><!-- End Trainers Section -->
+   </main>
+
+   <!-- CSS-->
+   <style>
+     .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+   <!--Fim css-->
+
+   @section Scripts{
+    <!-- Initialize Swiper -->
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            keyboard: {
+                enabled: true,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    </script>
+   }

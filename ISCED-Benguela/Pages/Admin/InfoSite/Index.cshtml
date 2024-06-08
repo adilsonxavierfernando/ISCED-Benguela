@@ -1,0 +1,124 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.InfoSite.IndexModel
+@{
+    Layout = "_Layout-admin";
+}
+
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Informações do Site</h1>
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Informações da Noticia</h6>
+        </div>
+        <div class="card-body">
+            <div class="row container">
+                @if (Model.ModeloView!=null)
+                {
+                    <form method="post" class="col s12 container">
+
+                        <input type="hidden" value="ModeloView.ID" asp-for="ModeloView.ID" disabled />
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input asp-for="ModeloDTO.Geomap" value="@Model.ModeloView.Geomap" id="titulo" type="text" class="validate" required disabled>
+                                <label for="titulo">Mapa</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input asp-for="ModeloDTO.Contacto.Email" id="titulo" value="@Model.ModeloView.Contacto.Email" type="email" class="validate" required disabled>
+                                <label for="titulo">Email</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input asp-for="ModeloDTO.Contacto.Telefone" value="@Model.ModeloView.Contacto.Telefone" id="titulo" type="tel" class="validate" required disabled>
+                                <label for="titulo">Telefone</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col-6 s12">
+                                <input asp-for="ModeloDTO.Endereco.Cidade" value="@Model.ModeloView.Endereco.Cidade" id="titulo" type="text" class="validate" required disabled>
+                                <label for="titulo">Cidade</label>
+                            </div>
+                            <div class="input-field col-6 s12">
+                                <input asp-for="ModeloDTO.Endereco.Bairro" id="titulo" value="@Model.ModeloView.Endereco.Bairro" type="text" class="validate" required disabled>
+                                <label for="titulo">bairro</label>
+                            </div>
+                            <div class="input-field col-12 s12">
+                                <input asp-for="ModeloDTO.Endereco.Localizacao" id="titulo" value="@Model.ModeloView.Endereco.Localizacao" type="text" class="validate" required disabled>
+                                <label for="titulo">Localização</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <a asp-page="/Admin/InfoSite/Edite" asp-route-id="@Model.ModeloView.ID" class="btn btn-large">Alterar dados do Site</a>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <form method="post" class="col s12 container">
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input asp-for="ModeloDTO.Geomap"  id="titulo" type="text" class="validate" required disabled>
+                                <label for="titulo">Mapa</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input asp-for="ModeloDTO.Contacto.Email" id="titulo"  type="email" class="validate" required disabled>
+                                <label for="titulo">Email</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input asp-for="ModeloDTO.Contacto.Telefone"  id="titulo" type="tel" class="validate" required disabled>
+                                <label for="titulo">Telefone</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col-6 s12">
+                                <input asp-for="ModeloDTO.Endereco.Cidade"  id="titulo" type="text" class="validate" required disabled>
+                                <label for="titulo">Cidade</label>
+                            </div>
+                            <div class="input-field col-6 s12">
+                                <input asp-for="ModeloDTO.Endereco.Bairro" id="titulo"  type="text" class="validate" required disabled>
+                                <label for="titulo">bairro</label>
+                            </div>
+                            <div class="input-field col-12 s12">
+                                <input asp-for="ModeloDTO.Endereco.Localizacao" id="titulo"  type="text" class="validate" required disabled>
+                                <label for="titulo">Localização</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <button class="btn btn-large">Salvar dados do Site</button>
+                            </div>
+                        </div>
+                    </form>
+                }
+     
+
+            </div>
+        </div>
+    </div>
+
+    @{
+        if (TempData["successAlert"] is not null)
+        {
+            if ((bool)TempData["successAlert"])
+            {
+                @Html.Raw(Html.SweetAlert("Os dados do Site foram modificados com sucesso", "Portal de Administração", alertType.success))
+                ;
+            }
+            else
+            {
+                @Html.Raw(Html.SweetAlert("Não foi possivel alterar as informaçãoi do site", "Portal de Administração", alertType.error))
+                ;
+            }
+
+        }
+    }
+</div>

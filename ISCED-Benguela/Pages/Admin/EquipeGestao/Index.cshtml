@@ -1,0 +1,69 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.EquipeGestao.IndexModel
+@{
+    Layout = "_Layout-admin";
+    ViewData["Title"] = "Equipe de Gestão";
+}
+
+<section class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Equipe de Gestão</h1>
+    </div>
+    <div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light red pulse" asp-page="/Admin/EquipeGestao/Change"><i class="material-icons">add</i></a>
+    </div>
+    <table class="responsive-table highlight card-panel">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome Completo</th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Opções</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.LstMember)
+            {
+                <tr>
+                    <th scope="row">@item.ID</th>
+                    <td>
+                        <div class="chip">
+                            <img src="@item.Foto.Extensao" alt="Contact Person">
+                            @item.NomeFuncionario
+                        </div>
+                    </td>
+                    <td>@item.Cargo</td>
+                    <td class="row gp-2">
+                        <a data-position="bottom" data-delay="50" data-tooltip="Deletar Funcionário" asp-route-id="@item.ID" onclick="confirmDelete(this,@item.ID,'Delete')" asp-page-handler="Delete" class="btn tooltipped col red accent-4 white-text"><i class="small material-icons">delete</i></a>
+
+                        <a data-position="bottom" asp-page="/Admin/EquipeGestao/Edit" data-delay="50" data-tooltip="Editar Funcionário" asp-route-id="@item.ID" class="btn tooltipped col white "><i class="small material-icons green-text">edit</i></a>
+                        </td>
+                </tr>
+            }
+          
+        </tbody>
+    </table>
+    
+</section>
+@section Scripts {
+    @Html.Raw(Html.SweetConfirmAlert("Deletar Funcionário", "Tem certeza que quer deletar este funcionário?"));
+}
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

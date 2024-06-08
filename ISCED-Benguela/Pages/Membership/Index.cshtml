@@ -1,0 +1,148 @@
+﻿@page
+@model ISCED_Benguela.Pages.Membership.IndexModel
+@{
+}
+
+
+@if (Model.Area=="professor")
+{
+    <main id="main">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs" data-aos="fade-in">
+            <div class="container">
+                <h2>Membros reitores e Quadro Docencte</h2>
+                <p> <a asp-page="/Index">Início</a> > Professores do Isced </p>
+            </div>
+        </div><!-- End Breadcrumbs -->
+        <!-- ======= Trainers Section ======= -->
+
+        <section id="trainers" class="trainers">
+            <div class="container" data-aos="fade-up">
+                <div class="row" data-aos="zoom-in" data-aos-delay="100">
+
+                    @foreach (var item in Model.Professores)
+                    {
+
+                        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                            <div class="member">
+                                @if (item.Foto != null)
+                                {
+                                    if (item.Foto.Ficheiro != null)
+                                    {
+                                        <img src="@item.Foto.Extensao" class="img-fluid" alt="">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                    }
+                                }
+                                else
+                                {
+                                    <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                }
+
+                                <div class="member-content">
+                                    <h4>@item.Nome @item.Sobrenome</h4>
+                                    <span>@item.Departamentos.NomeDepartamento</span>
+                                    <p>
+                                        @item.Bibliografia
+                                    </p>
+                                    @if (item.Redes != null)
+                                    {
+                                        <div class="social">
+                                            <a href="@item.Redes.Youtube"><i class="bi bi-youtube"></i></a>
+                                            <a href="@item.Redes.Facebook"><i class="bi bi-facebook"></i></a>
+                                            <a href="@item.Redes.Instagram"><i class="bi bi-instagram"></i></a>
+                                            <a href="@item.Redes.Linkedin"><i class="bi bi-linkedin"></i></a>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+
+        </section><!-- End Trainers Section -->
+    </main>
+}
+else
+{
+    <main id="main">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs" data-aos="fade-in">
+            <div class="container">
+                <h2>Membros reitores e Quadro Docencte</h2>
+                <p> <a asp-page="/Index">Início</a> > Membros de Direcção do <b>ISCED</b> </p>
+                Area: @Model.Area
+            </div>
+        </div><!-- End Breadcrumbs -->
+        <!-- ======= Trainers Section ======= -->
+
+        <section id="trainers" class="trainers">
+            <div class="container" data-aos="fade-up">
+                <div class="row" data-aos="zoom-in" data-aos-delay="100">
+                    @if (Model.Membros != null && Model.Membros.Count>0)
+                    {
+                        @foreach (var item in Model.Membros)
+                        {
+
+                            <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                                <div class="member">
+                                    @if (item.Foto != null)
+                                    {
+                                        if (item.Foto.Ficheiro != null)
+                                        {
+                                            <img src="@item.Foto.Extensao" class="img-fluid" alt="">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                    }
+
+                                    <div class="member-content">
+                                        <h4>@item.NomeFuncionario</h4>
+                                        <span>@item.Cargo</span>
+
+                                        @if (item.RedesSociais != null)
+                                        {
+                                            <div class="social">
+                                                <a href="@item.RedesSociais.Youtube"><i class="bi bi-youtube"></i></a>
+                                                <a href="@item.RedesSociais.Facebook"><i class="bi bi-facebook"></i></a>
+                                                <a href="@item.RedesSociais.Instagram"><i class="bi bi-instagram"></i></a>
+                                                <a href="@item.RedesSociais.Linkedin"><i class="bi bi-linkedin"></i></a>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                    else
+                    {
+                        <h5 class="text-center">Não Há nada para apresentar...</h5>
+                    }
+
+                </div>
+
+            </div>
+
+        </section><!-- End Trainers Section -->
+     
+    </main>
+}
+
+
+
+
+

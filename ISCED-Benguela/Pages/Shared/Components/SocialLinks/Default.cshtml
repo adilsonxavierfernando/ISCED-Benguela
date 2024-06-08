@@ -1,0 +1,13 @@
+﻿@model Task<Modelos.InfoSite>
+@{
+    var info = await Model;
+}
+@if(info!=null && info.Redes!=null){
+    <div class="social-links text-center text-md-right pt-3 pt-md-0">
+        <a target="_blank" href="@info.Redes.Facebook" class="facebook"><i class="bx bxl-facebook"></i></a>
+        <a target="_blank" href="@info.Redes.Instagram" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a target="_blank" href="@info.Redes.Youtube" class="youtube"><i class="bx bxl-skype"></i></a>
+        <a target="_blank" href="@info.Redes.Linkedin" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+    </div>
+}
+

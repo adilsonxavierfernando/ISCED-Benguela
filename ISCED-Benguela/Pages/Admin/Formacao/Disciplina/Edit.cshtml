@@ -1,0 +1,74 @@
+﻿@page
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Formacao.Disciplina.EditModel
+@{
+
+    Layout = "_Layout-admin";
+    ViewData["title"] = "Editar Disciplina";
+    var dados = ViewData["disiciplina"] as Modelos.Disciplina;
+    var Cursos = ViewData["cursos"] as List<Modelos.Cursos>;
+
+}
+
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Editar Disciplina</h1>
+        <a class="btn large deep-orange darken-4" asp-page="Index"> <i class="small material-icons">arrow_back</i> Voltar</a>
+        <br /><br />
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div class="row container">
+                <form method="post" class="col s12 container">
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="modelo.NomeDisciplina" id="titulo" type="text" class="validate" required>
+                            <label for="titulo">Nome da Disciplina</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchimento Obrigatório</span>
+                        </div>
+                    </div>
+                    <div class="input-field col s12">
+                        <select id="disciplinas" asp-for="modelo.CursoID">
+                            <option value="" disabled selected>Escolher Curso</option>
+                            @foreach (var item in Cursos)
+                            {
+                                <option value="@item.ID">@item.NomeCurso</option>
+                            }
+                        </select>
+                        <label for="disciplinas">Curso</label>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button class="btn btn-large orange"> <i class="small material-icons">send</i> Salvar </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@section Scripts {
+    @Html.Raw(Html.SweetConfirmAlert("Deletar Funcionário", "Tem certeza que quer deletar este funcionário?"));
+}
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

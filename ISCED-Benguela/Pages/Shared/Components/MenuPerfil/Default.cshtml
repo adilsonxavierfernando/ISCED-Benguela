@@ -1,0 +1,84 @@
+﻿@using System.Security.Claims
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+@model Modelos.DTO.ModelViewPerfilDTO
+    int idProf = (await Model.GetProfessores).ID;
+    bool estado = (await Model.GetProfessores).Ativo;
+    string nome = $"{(await Model.GetProfessores).Nome} {(await Model.GetProfessores).Sobrenome}";
+    //TempData["RequestUrl"] = Context.Request.Path;
+
+}
+
+<div id="chat-dropdown" class="dropdown-content dropdown-tabbed">
+    <ul class="tabs tabs-fixed-width">
+        <li class="tab col s3"><a href="#settings">Perfil</a></li>
+        <li class="tab col s3"><a href="#friends" class="active">Conectados</a></li>
+    </ul>
+    <div id="settings" class="col s12">
+        <div class="settings-group">
+            <div class="setting">
+                @nome
+                <div class="switch right">
+                  
+                         @if(estado){
+                        <label>
+                            Online
+                        </label>
+                        }
+                        else
+                        {
+                        <label>
+                            Offline
+                        </label>
+                    } 
+                       
+             
+                </div>
+            </div>
+            <form method="post" asp-action="/Admin/Perfil/">
+            <div class="setting">
+                Manter-me Conectado
+                <label class="right">
+                    @if(estado){
+                        <input id="check" type="checkbox" checked><span></span>
+                    }else{
+                        <input id="check" type="checkbox"><span></span>
+                    }
+                   
+                </label>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div id="friends" class="col s12">
+        <ul class="collection flush">
+             @if ((await Model.GetEstudantes).Where(x => x.Ativo) != null)
+            {
+                foreach (var item in (await Model.GetEstudantes).Where(x => x.Ativo))
+                {
+                    item.Avatar.Extensao = FileConversor.ByteToString(item.Avatar.Ficheiro);
+
+                    <li class="collection-item avatar">
+                        <div class="badged-circle online"><img src="@item.Avatar.Extensao" alt="avatar" class="circle"></div><span class="title">@item.Nome + @item.Sobrenome</span>
+                        <p class="truncate">Estudante de @item.Curso.NomeCurso</p>
+                    </li>
+                }
+            } 
+    
+       
+        </ul>
+    </div>
+</div>
+<script>
+    document.getElementById('check').addEventListener('change', function () {
+        
+            var boolvar = this.checked;
+            var id = @idProf; 
+            var url = `/Admin/Perfil/Account?id=${id}&isChecked=${boolvar}&handler=Ativo`;
+            window.location.href = url;
+        
+    });
+</script>
+

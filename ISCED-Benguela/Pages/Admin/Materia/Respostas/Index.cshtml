@@ -1,0 +1,73 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Materia.Respostas.IndexModel
+@{
+    Layout = "_Layout-admin";
+}
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model.ComentariosLst)
+        {
+            string modal = $"modal{item.ID}";
+            <div class="col s12 m6">
+                <div class="card white darken-1">
+                    <div class="card-content dark-text">
+                        <span class="card-title">@item.Estudante.Nome @item.Estudante.Sobrenome</span>
+                        <p>
+                            @item.Comentario
+                        </p>
+                    </div>
+                    <div class="card-action">
+                        @item.Materia.Titulo
+                    </div>
+                    <div class="card-action">
+                        <a class="waves-effect waves-light red btn modal-trigger" href="#@modal">Responder</a>
+                    </div>
+                </div>
+            </div>
+            <form method="post">
+                <div id="@modal" class="modal">
+                    <div class="modal-content">
+                        <h4>Resposta para @item.Estudante.Nome @item.Estudante.Sobrenome</h4>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="hidden" value="@item.ID" asp-for="ModeloDTO.ComentarioID" />
+                                <input type="hidden" value="@item.Materia.ProfessorID" asp-for="ModeloDTO.ProfessorID" />
+                                <i class="material-icons prefix">mode_edit</i>
+                                <textarea asp-for="ModeloDTO.Resposta" id="icon_prefix2" class="materialize-textarea"></textarea>
+                                <label for="icon_prefix2">Sua Resposta</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" href="#!" class="modal-close waves-effect waves-green btn-flat red-text">Enviar Resposta</button>
+                    </div>
+                </div>
+            </form>
+        }
+      
+    </div>
+   
+</div>
+
+<!-- Modal Trigger -->
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"])
+        {
+            @Html.Raw(Html.SweetAlert("Sua reação a matéria foi enviada", "Reagir a Matéria", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert("Sua reação não foi enviada", "Reagir a Matéria", alertType.error))
+            ;
+        }
+
+    }
+}
+<!-- Modal Structure -->
+

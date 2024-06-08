@@ -1,0 +1,106 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Materias.AnswersModel
+@{
+}
+ <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" data-aos="fade-in">
+        <div class="container">
+            <h2>Comunicação Directa</h2>
+            <p><a href="">Materia</a> > Respostas </p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+    <div class="row">
+        <div class="col-4">
+        <section class="container">
+            <h3>Seus Comentários</h3>
+                <div class="list-group">
+                    @foreach (var item in Model.Comentarios)
+                    {
+                        string ativo = item.MateriaID == Model.IdComentario ? "active" : "";
+                        <a asp-page="/Materias/Answers" asp-route-id="@item.ID" asp-route-MateriaID="@item.MateriaID" asp-page-handler="Answer" class="list-group-item @ativo list-group-item-action" aria-current="true">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@item.Materia.Titulo</h5>
+                                <small>@item.DataCriacao.ToLongDateString()</small>
+                            </div>
+                            <p class="mb-1">@item.Comentario.</p>
+                            <small>@item.Materia.Disciplina.NomeDisciplina.</small>
+                        </a>
+                    }
+                 
+                </div>
+        </section>
+        </div>
+        <div class="col">
+        <section class="container">
+                @if (Model.Respostas != null)
+                {
+                    @foreach (var item in Model.Respostas)
+                    {
+                        <div class="card text-center">
+                            <div class="card-header">
+                                "Profº" @item.Professor.Nome
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">@item.Comentario.Comentario</p>
+                                <h5 class="card-title">@item.Resposta.</h5>
+
+                            </div>
+                            <div class="card-footer text-body-secondary">
+                                @item.Comentario.DataCriacao.ToLongDateString()
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h5 class="text-center">Ainda não há respostas para Apresentar!</h5>
+                }
+
+           
+
+        </section>
+        @if(Model is not null && Model.IdComentario>0){
+                <section class="container">
+                    <div class="col-lg-12 mt-5 mt-lg-0">
+
+                        <form method="post" role="form">
+                            <input type="hidden" asp-for="ComentarioModel.MateriaID" value="@Model.IdComentario" />
+                            <input type="hidden" asp-for="ComentarioModel.EstudanteID" value="@Model.IdEstudante" />
+                            <div class="form-group mt-3">
+                                <textarea asp-for="ComentarioModel.Comentario" class="form-control" rows="5" placeholder="Sua reação..." required></textarea>
+                            </div>
+                            <hr />
+                            <div class="text-center"><button type="submit" class="btn btn-primary">Enviar Resposta</button></div>
+                        </form>
+
+                    </div>
+                </section>
+        }
+           
+        </div>
+    </div>
+ 
+
+    
+ </main>
+
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"])
+        {
+            @Html.Raw(Html.SweetAlert("Sua reação a matéria foi enviada", "Reagir a Matéria", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert("Sua reação não foi enviada", "Reagir a Matéria", alertType.error))
+            ;
+        }
+
+    }
+}

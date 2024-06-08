@@ -1,0 +1,144 @@
+﻿@page
+@model ISCED_Benguela.Pages.aboutModel
+@{
+}
+
+<main id="main">
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" data-aos="fade-in">
+        <div class="container">
+            <h2>Quem Somos?</h2>
+            <p> <a asp-page="/Index">Início</a> > Sobre Nós </p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+
+    <section id="about" class="about">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+                <div class="col-lg-12 pt-4 pt-lg-0 order-2 order-lg-1 content sobre-page">
+                    <h3>Instituto Superior de Ciências de Educação de Benguela</h3>
+                    <p>Há muitos anos, em uma cidade vibrante e acolhedora chamada Benguela, um grupo de visionários sonhava em criar uma instituição que pudesse transformar a educação em Angola. Eles acreditavam no poder da educação para mudar vidas e comunidades. Assim, em <b>2004</b>, nasceu o Instituto Superior de Ciências da Educação (ISCED) de Benguela.</p>
+
+                    <p>Desde o início, o ISCED de Benguela se destacou por seu compromisso com a excelência acadêmica e a inovação. A universidade começou com apenas alguns cursos, mas rapidamente expandiu sua oferta para incluir uma variedade de programas em ciências da educação, tornando-se um farol de aprendizado e descoberta.</p>
+
+                    <p>Ao longo dos anos, o ISCED de Benguela cresceu e evoluiu, mas sempre manteve seu foco na missão de formar educadores altamente qualificados. A universidade se orgulha de seus alunos, muitos dos quais se tornaram líderes em suas comunidades e contribuíram significativamente para o campo da educação em Angola e além.</p>
+
+                    <p>Hoje, o ISCED de Benguela é mais do que apenas uma universidade - é uma comunidade de aprendizado vibrante e diversificada, onde estudantes, professores e funcionários trabalham juntos para criar um ambiente de aprendizado inclusivo e acolhedor. A universidade continua a inovar e a se adaptar, sempre buscando novas maneiras de atender às necessidades de seus alunos e da comunidade mais ampla.</p>
+
+                    <p>A história do ISCED de Benguela é uma história de paixão pela educação, compromisso com a excelência e dedicação à comunidade. É uma história que continua a ser escrita a cada dia, à medida que a universidade avança em sua missão de transformar vidas através da educação.</p>
+
+                    <h5><i class="bi bi-flag-fill"></i> Missão</h5>
+                    <p>
+                        Nossa missão é formar educadores altamente qualificados e comprometidos com a promoção do conhecimento, o desenvolvimento humano e a cidadania. Nosso objetivo é fornecer uma educação de alta qualidade que prepare os alunos para enfrentar os desafios do século 21, promovendo a inovação, a criatividade e a inclusão em todas as áreas da educação.
+                    </p>
+                    <h5> <i class="bi bi-bullseye"></i> Visão</h5>
+                    <p>
+                        Nossa missão é formar educadores altamente qualificados e comprometidos com a promoção do conhecimento, o desenvolvimento humano e a cidadania. Nosso objetivo é fornecer uma educação de alta qualidade que prepare os alunos para enfrentar os desafios do século 21, promovendo a inovação, a criatividade e a inclusão em todas as áreas da educação.
+                    </p>
+                    <h5><i class="bi bi-award-fill"></i> Valores</h5>
+                    <ul>
+                        <li><i class="bi bi-check-circle"></i> <b>Excelência Acadêmica:</b> Nos esforçamos para alcançar a mais alta qualidade em nosso ensino, pesquisa e serviço à comunidade.</li>
+                        <li><i class="bi bi-check-circle"></i> <b>Inovação:</b> Valorizamos a criatividade e a inovação em todas as áreas de nossa instituição</li>
+                        <li><i class="bi bi-check-circle"></i> <b>Inclusão:</b> Estamos comprometidos com a criação de um ambiente inclusivo e acolhedor para todos os alunos, independentemente de sua origem, identidade ou perspectivas.</li>
+                        <li><i class="bi bi-check-circle"></i> <b>Integridade:</b> Acreditamos na honestidade, transparência e ética em todas as nossas ações.</li>
+                        <li><i class="bi bi-check-circle"></i> <b>Compromisso com a Comunidade:</b> Nos esforçamos para fazer a diferença em nossas comunidades através do serviço, parcerias e engajamento cívico</li>
+                    </ul>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Directores-->
+        <section id="trainers" class="trainers">
+            <div class="container" data-aos="fade-up">
+                <div class="section-title">
+                    <h2>Equipe de Gestão</h2>
+                    <p>Equipe Eficiente e Comprometida</p>
+                </div>
+                <div class="row" data-aos="zoom-in" data-aos-delay="100">
+
+                    @foreach (var item in Model.LstMember)
+                    {
+
+                        <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                            <div class="member">
+                                @if (item.Foto != null)
+                                {
+                                    if (item.Foto.Ficheiro != null)
+                                    {
+                                        <img src="@item.Foto.Extensao" class="img-fluid" alt="">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                    }
+                                }
+                                else
+                                {
+                                    <img src="~/img/trainers/avatar.png" class="img-fluid" alt="">
+                                }
+
+                                <div class="member-content">
+                                    <h4>@item.NomeFuncionario</h4>
+                                    <span>@item.Cargo</span>
+                                 @*    <p>
+                                        @item.Bibliografia
+                                    </p> *@
+                                    @if (item.RedesSociais != null)
+                                    {
+                                        <div class="social">
+                                            <a href="@item.RedesSociais.Youtube"><i class="bi bi-youtube"></i></a>
+                                            <a href="@item.RedesSociais.Facebook"><i class="bi bi-facebook"></i></a>
+                                            <a href="@item.RedesSociais.Instagram"><i class="bi bi-instagram"></i></a>
+                                            <a href="@item.RedesSociais.Linkedin"><i class="bi bi-linkedin"></i></a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <a asp-page="/Membership/Index" asp-area="gestao" asp-route-zona="gestao">Ver mais...</a>
+            </div>
+
+        </section><!-- End Trainers Section -->
+    </section><!-- End About Section -->
+
+</main>
+
+<style>
+    .sobre-page p,.sobre-page li{
+        text-align:justify;
+        font-size:14pt;
+        font-weight:500;
+        margin:10px 50px;
+    }
+    .sobre-page h5{
+        font-weight:700;
+        color:floralwhite;
+        background-color:orangered;
+        border-radius:10px;
+        padding:15px;
+        margin:4px;
+        width:200px;
+        text-align:center;
+        position:relative;
+    }
+    .sobre-page h5::before
+    {
+        content:'';
+        display:block;
+        width:calc(500px+60px);
+        height:4px;
+        background-color:darkred;
+        position:absolute;
+    }
+    .sobre-page h3{
+        color:orangered;
+        font-weight:900;
+        font-size:36px;
+    }
+</style>

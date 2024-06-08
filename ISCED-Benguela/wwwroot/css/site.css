@@ -1,0 +1,211 @@
+
+
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+#navbar{
+    box-shadow:none !important;
+}
+#navbar-mobile{
+    box-shadow:var(--mdb-navbar-box-shadow);
+    
+}
+
+.bg-img,
+.form-wrap {
+    /*  height: auto;
+    min-height: 500px; */
+}
+
+.bg-img {
+    left: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 100%;
+    position: relative;
+    height: auto;
+    /* z-index: 2; */
+}
+
+.clips-brevemente {
+    background-color: #ff7e23;
+    color:white;
+    display:block;
+    padding:4px;
+    border-radius:4px;
+    margin:4px;
+}
+
+.form-wrap {
+    right: 0;
+    /* position: relative; */
+    /* z-index: 1; */
+    padding: 5%;
+    width: 100%;
+    background: #fff;
+    height: auto;
+}
+
+
+    .title {
+        font-size: 50px;
+        color: #000;
+    }
+
+    .form-floating {
+        position: relative;
+        margin-bottom: 15px;
+    }
+.row .form-floating label , label{
+    
+    margin-left: 15px;
+    padding-inline-start:12px;
+    font-weight:700;
+}
+
+         .form-control {
+            height: 60px !important;
+            border-radius: 10px !important;
+        }
+
+        .form-control:active,  .form-control:focus {
+                outline: none;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                border-color: #ff7e23;
+            }
+
+   .password-show-toggle {
+        cursor: pointer;
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        z-index: 9;
+    }
+
+       .password-show-toggle span {
+            font-size: 20px;
+        }
+
+         .password-show-toggle span:before {
+                font-family: 'unicons-line';
+                content: "\ebf8";
+            }
+
+        .password-show-toggle.active span:before {
+            content: "\ebaf";
+        }
+
+  .form-check {
+        margin-bottom: 30px;
+    }
+
+        .form-check .form-check-input {
+            border-color: #d1d1d1 !important;
+            font-weight:600;
+            font-size:14pt;
+        }
+
+           .form-check .form-check-input:checked {
+                background-color: #ff7e23;
+                border-color: #ff7e23 !important;
+                outline: none;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+            }
+
+           .form-check .form-check-input:focus,  .form-check .form-check-input:active {
+                outline: none;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+            }
+
+.btn-primary {
+    border-radius: 10px;
+    background-color: #ff7e23;
+    border-color: #ff7e23;
+    height: 60px;
+    display:block;
+    font-weight: 600;
+    -webkit-box-shadow: 0 15px 30px -7px rgba(148, 80, 76, 0.5);
+    box-shadow: 0 15px 30px -7px rgba(148, 80, 76, 0.5);
+    -webkit-transition: .3s all ease;
+    transition: .3s all ease;
+    font-size: 18px;
+}
+
+.green {
+    background-color: white;
+    color: #ff7e23;
+}
+
+        .btn-primary:hover {
+            background-color: #3ac162;
+            border-color: #2a8e48;
+            -webkit-box-shadow: 0 15px 30px -7px rgba(58, 193, 98, 0.5);
+            box-shadow: 0 15px 30px -7px rgba(58, 193, 98, 0.5);
+        }
+
+    .form-wrap .social-account-wrap {
+        padding-top: 30px;
+        padding-bottom: 50px;
+    }
+
+        .form-wrap .social-account-wrap h4 {
+            text-align: center;
+            font-size: 14px;
+            font-weight: normal;
+            position: relative;
+        }
+
+            .form-wrap .social-account-wrap h4 span {
+                z-index: 1;
+                display: inline-block;
+                padding-left: 20px;
+                padding-right: 20px;
+                background: #fff;
+            }
+
+            .form-wrap .social-account-wrap h4:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 0;
+                -webkit-transform: translateY(-50%);
+                transform: translateY(-50%);
+                width: 100%;
+                height: 1px;
+                background-color: #d1d1d1;
+                z-index: -1;
+            }
+
+        .form-wrap .social-account-wrap .social-account li {
+            width: calc(25% - 0);
+        }
+
+            .form-wrap .social-account-wrap .social-account li a {
+                display: inline-block;
+                border: 1px solid #d1d1d1;
+                padding: 10px;
+                font-size: 2rem;
+                border-radius: 8%;
+            }
+
+                .form-wrap .social-account-wrap .social-account li a:hover {
+                    border-color: #bdbdbd;
+                }
+
+.img-profile{
+    max-width:20px;
+}

@@ -1,0 +1,98 @@
+﻿@page
+@model ISCED_Benguela.Pages.Formacao.Cursos.ChangeModel
+@{
+
+    Layout = "_Layout-admin";
+    ViewData["title"] = "Criar Cursos";
+
+}
+
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Criar Novo Curso</h1>
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div class="row container">
+                <form method="post" enctype="multipart/form-data" class="col s12 container">
+
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="modeloDTO.NomeCurso" id="titulo" type="text" class="validate" required>
+                            <label for="titulo">Nome do Curso</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchiemtno Obrigatório</span>
+                        </div>
+                        <div class="input-field col s12">
+                            <textarea asp-for="modeloDTO.Descricao" type="text" class="materialize-textarea validate" required></textarea>
+                            <label for="titulo">Descrição do Curso</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchiemtno Obrigatório</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select id="disciplinas" asp-for="modeloDTO.DepartamentoID">
+                                <option value="" disabled selected>Escolher departamento</option>
+                                @foreach (var item in Model.GetDepartamentos)
+                                {
+                                    <option value="@item.ID">@item.NomeDepartamento</option>
+                                }
+                            </select>
+                            <label for="disciplinas">Departamento</label>
+                        </div>
+                        <div class="input-field col s16">
+                            <select id="disciplinas" asp-for="modeloDTO.FormacaoID">
+                                <option value="" disabled selected>Escolher formação</option>
+                                @foreach (var item in Model.LstFormacao)
+                                {
+                                    <option value="@item.ID">@item.NomeFormacao</option>
+                                }
+                            </select>
+                            <label for="disciplinas">Formação</label>
+                        </div>
+
+                        <div class="input-field col">
+                            <select id="disciplinas" asp-for="modeloDTO.Ativo">
+                                <option value="" disabled selected>Escolher estado do curso</option>
+                                <option value="true">Activo</option>
+                                <option value="false">Inativo</option>
+                            </select>
+                            <label for="disciplinas">Estado do Curso</label>
+                        </div>
+                    </div>
+
+                
+                    <div class="row">
+                        <div class="file-field input-field">
+                            <div class="btn red">
+                                <span><i class="material-icons">panorama</i></span>
+                                <input type="file" asp-for="modeloDTO.CapaCurso.Caminho">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Escolher Imagem de capa">
+                            </div>
+                        </div>
+                        <div class="file-field input-field">
+                            <div class="btn red">
+                                <span><i class="material-icons">picture_as_pdf</i></span>
+                                <input type="file" asp-for="modeloDTO.ArquivoCurso.Caminho" accept="application/pdf">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Escolher Arquivo PDF da Grade">
+                            </div>
+                        </div>
+                    </div>
+             
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button class="btn btn-large orange"> <i class="small material-icons">send</i> Salvar </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

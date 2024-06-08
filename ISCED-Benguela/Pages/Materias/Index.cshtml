@@ -1,0 +1,50 @@
+﻿@page
+@model ISCED_Benguela.Pages.Materias.IndexModel
+@{
+    ViewData["Title"] = "Materias";
+}
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" data-aos="fade-in">
+        <div class="container">
+            <h2>Materias Publicadas</h2>
+            <p>Aprenda em qualquer hora, viva do conhecimento com o ISCED. </p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+    <!-- ======= Events Section ======= -->
+    <section id="events" class="events">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+                @if (Model.MateriaList != null && Model.MateriaList.Count > 0)
+                {
+                    @foreach (var item in Model.MateriaList)
+                    {
+                        var resumido = item.Conteudo.Length > 100 ? item.Conteudo.Substring(0, 100) : item.Conteudo;
+                        string dataFormatada = item.DataPublicacao.ToString("dd 'de' MMMM 'de' yyyy");
+                        <div class="col-md-6 d-flex align-items-stretch">
+                            <div class="card">
+                                <div class="card-img">
+                                    <img src="@item.Capa.Extensao" alt="...">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><a asp-page="\Detalhe" asp-route-id="@item.ID" asp-area="Index">@item.Titulo</a></h5>
+                                    <p class="fst-italic text-center">@dataFormatada</p>
+                                    <p class="card-text">@Html.Raw(resumido)</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h5 class="text-center">Nenhuma matéria por apresentar!</h5>
+                }
+
+            </div>
+
+        </div>
+    </section><!-- End Events Section -->
+
+</main><!-- End #main -->

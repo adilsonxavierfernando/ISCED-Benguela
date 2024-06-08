@@ -1,0 +1,147 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@using System.Security.Claims
+@model ISCED_Benguela.Pages.Admin.Materia.InsertNovoModel
+@{
+    Layout = "_Layout-admin";
+}
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Publicar Materia</h1>
+        <a class="btn large deep-orange darken-4" asp-page="/Admin/Materia/Index"> <i class="small material-icons">view_carousel</i> Materias Publicadas</a>
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Informações da Noticia</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <form method="post" enctype="multipart/form-data" class="col s12">
+
+                    <input type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" asp-for="model.ProfessorID"/>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="model.Titulo" id="titulo" type="text" class="validate" required>
+                            <label for="titulo">Titulo da Materia</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select  id="departamento"  asp-for="model.DepartamentosID">
+                            <option value="" disabled selected>Escolher departamento</option>
+                                @foreach (var item in Model.lstDepartamento)
+                                {
+                                    <option value="@item.ID">@item.NomeDepartamento</option>
+                                }
+                            </select>
+                            <label for="departamento">Departamento</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <select id="disciplinas"  asp-for="model.DisciplinaID">
+                                <option value="" disabled selected>Escolher disciplina</option>
+                                @foreach (var item in Model.lstDisciplinas)
+                                {
+                                     <option value="@item.ID">@item.NomeDisciplina</option>
+                                }
+                            </select>
+                            <label for="disciplinas">Disiciplina</label>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="input-field col s12">
+                            <div class="input-field col s12">
+                         @*        <label for="editor">Conteudo Resumido da Matéria</label> *@
+                                <textarea id="editor" asp-for="model.Conteudo" class="materialize-textarea"></textarea>
+                        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="file-field input-field col s6">
+                            <div class="col s6" style="display:none;" id="chip">
+                                <img src="" alt="Imagem da materia" id="thumbnail" style="width:80%">
+                            </div>
+                            <div class="btn red">
+                                <span>  <i class="small material-icons">crop_originalt</i></span>
+                            
+                                <input id="foto" type="file" asp-for="model.Capa.Caminho" accept="image/png, image/jpg, image/jpeg, image/gif, image/tif" required>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Inserir imagem de capa da matéria">
+                            </div>
+                            <script>
+                                const saveButton = document.getElementById('saveButton');
+
+                                document.getElementById('foto').addEventListener('change', function (e) {
+                                    showThumbnail(this.files);
+                                });
+
+                                function showThumbnail(files) {
+                                    if (files && files[0]) {
+                                        var reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            document.getElementById('thumbnail').src = e.target.result;
+                                            document.getElementById('chip').style.display = 'block';
+                                            document.getElementById('icon1').style.display = 'none';
+                                            var element=document.getElementById('area-ico');
+                                            element.classList.remove("red");
+                                            element.classList.add("white");
+
+                                        };
+                                        reader.readAsDataURL(files[0]);
+                                        saveButton.disabled = false;
+                                    }
+                                }
+                            </script>
+                        </div>
+
+                        <div class="file-field input-field col s6">
+                            
+                            <div class="btn red">
+                                <span>  <i class="small material-icons">picture_as_pdf</i></span>
+                                <input type="file" asp-for="model.Arquivo.Caminho" accept="application/pdf" required>
+                                
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Inserir PDF da Matéria">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button class="btn btn-large red">Publicar Matéria</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @{
+        if (TempData["successAlert"] is not null)
+        {
+            if ((bool)TempData["successAlert"])
+            {
+                @Html.Raw(Html.SweetAlert("Sua Matéria foi publica com Sucesso", "Publicação de Matéria", alertType.success))
+                ;
+            }
+            else
+            {
+                @Html.Raw(Html.SweetAlert("Sua Materia não foi publicada", "Publicação de Matéria", alertType.error))
+                ;
+            }
+
+        }
+    }
+</div>
+
+@section Scripts{
+    <script>
+        const editor = Jodit.make("#editor");
+    </script>
+} 
+

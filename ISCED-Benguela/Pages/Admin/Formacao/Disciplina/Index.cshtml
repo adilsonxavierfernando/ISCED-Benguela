@@ -1,0 +1,66 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Formacao.Disciplina.IndexModel
+@{
+    Layout = "_Layout-admin";
+    ViewData["Title"] = "Disciplinas";
+}
+
+<section class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Disciplinas Disponíveis</h1>
+    </div>
+    <div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light red pulse" asp-page="/Admin/Formacao/Disciplina/Change"><i class="material-icons">add</i></a>
+    </div>
+    <table class="responsive-table highlight card-panel">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome da Disciplina</th>
+                <th scope="col">Curso</th>
+                <th scope="col">Opções</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.GetDisciplina)
+            {
+                <tr>
+                    <td scope="row">@item.ID</td>
+                    <td>
+                       @item.NomeDisciplina
+                    </td>
+                    <td>@item.Curso.NomeCurso</td>
+                    <td>
+                        <a data-position="bottom" data-delay="50" data-tooltip="Deletar Disciplina" asp-route-id="@item.ID" onclick="confirmDelete(this,@item.ID,'Delete')" asp-page-handler="Delete" class="btn tooltipped col red accent-4 white-text"><i class="small material-icons">delete</i></a>
+
+                        <a data-position="bottom" asp-page="/Admin/Formacao/Disicplina/Edit" data-delay="50" data-tooltip="Editar Disciplina" asp-route-id="@item.ID" class="btn tooltipped col white "><i class="small material-icons green-text">edit</i></a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</section>
+@section Scripts {
+    @Html.Raw(Html.SweetConfirmAlert("Deletar Disciplina", "Tem certeza que quer deletar esta Disciplina"));
+}
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

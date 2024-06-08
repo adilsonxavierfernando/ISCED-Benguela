@@ -1,0 +1,33 @@
+﻿@page
+@model ISCED_Benguela.Pages.Formacao.CursoDetalheModel
+@{
+    ViewData["title"] = @Model.CursoModel.NomeCurso;
+    ViewData["Description"] = @Model.CursoModel.Departamento.NomeDepartamento;
+    var nome = @Model.CursoModel.NomeCurso +".pdf";
+}
+
+<main id="main" data-aos="fade-in">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <h2>@Model.CursoModel.NomeCurso</h2>
+            <p>@Model.CursoModel.Departamento.NomeDepartamento. </p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+    <section class="container">
+        @if (@Model.CursoModel.Ativo)
+        {
+            <h3>Descrição</h3>
+            <p>@Model.CursoModel.Descricao</p>
+            <hr />
+
+            <a href="@Model.CursoModel.ArquivoCurso.Extensao" download="@nome">Descarregar Grade Curricular</a>
+        }
+        else
+        {
+            <h1 style="color:orangered; text-align:center">Este curso ainda não se encontra disponível!</h1>
+        }
+
+    </section>
+</main>

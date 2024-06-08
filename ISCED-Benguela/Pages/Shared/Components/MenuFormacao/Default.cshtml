@@ -1,0 +1,8 @@
+﻿@model Task<List<Modelos.Formacao>>
+<ul>
+    @foreach (var item in await Model)
+    {
+      
+        <li><a asp-area="Formacao" asp-page="/Formacao/index" asp-route-id="@item.ID">@item.NomeFormacao</a></li>
+    }
+</ul>

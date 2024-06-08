@@ -1,0 +1,106 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ContactoModel
+@{
+    ViewData["Title"] = "Contacte-Nos";
+}
+
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" data-aos="fade-in">
+        <div class="container">
+            <h2>Contacte-nos</h2>
+            <p>Abertos para feedbacks, Exclarecimentos e Mentoria. </p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+    @if (Model.info != null)
+    {
+        <!-- ======= Contact Section ======= -->
+        <section id="contact" class="contact">
+            <div data-aos="fade-up">
+                <iframe  src="@Model.info.Geomap" width="100%" height="450" style="border:0;" allowfullscreen="allowfullscreen" loading="lazy" referrerpolicy="no-referrer-when-downgrade" frameborder="0" ></iframe>
+            </div>
+
+            <div class="container" data-aos="fade-up">
+
+                <div class="row mt-5">
+
+                    <div class="col-lg-4">
+                        <div class="info">
+                            <div class="address">
+                                <i class="bi bi-geo-alt"></i>
+                                <h4>Localização:</h4>
+                                <p>@Model.info.Endereco.Localizacao, @Model.info.Endereco.Localizacao, Angola</p>
+                            </div>
+
+                            <div class="email">
+                                <i class="bi bi-envelope"></i>
+                                <h4>Email:</h4>
+                                <p>@Model.info.Contacto.Email</p>
+                            </div>
+
+                            <div class="phone">
+                                <i class="bi bi-phone"></i>
+                                <h4>Telefone:</h4>
+                                <p>@Model.info.Contacto.Telefone</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-8 mt-5 mt-lg-0">
+
+                        <form  method="post"  role="form">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <input type="text" asp-for="modelo.Nome" class="form-control" id="name" placeholder="Seu Nome" required>
+                                </div>
+                                <div class="col-md-6 form-group mt-3 mt-md-0">
+                                    <input type="email" class="form-control" asp-for="modelo.Email" id="email" placeholder="Correio Electronico" required>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3">
+                                <input type="text" class="form-control" asp-for="modelo.Assunto" id="subject" placeholder="Assunto" required>
+                            </div>
+                            <div class="form-group mt-3">
+                                <textarea class="form-control" asp-for="modelo.Mensagem" rows="5" placeholder="Message" required></textarea>
+                            </div>
+                            <hr />
+                            <div class="text-center"><button type="submit" class="btn btn-primary">Enviar Mensagem</button></div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- End Contact Section -->
+    }
+    else
+    {
+        <h5 class="text-center">Não Há nada para mostrar aqui!</h5>
+    }
+
+
+</main><!-- End #main -->
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"])
+        {
+            @Html.Raw(Html.SweetAlert("Seu feedback foi enviado!", "Feedback", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert("Seu feedback não foi enviado", "Feedback", alertType.error))
+            ;
+        }
+
+    }
+}

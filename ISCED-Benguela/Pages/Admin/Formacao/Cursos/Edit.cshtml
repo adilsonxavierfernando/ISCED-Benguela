@@ -1,0 +1,183 @@
+﻿@page
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Formacao.Cursos.EditModel
+@{
+    Layout = "_Layout-admin";
+    ViewData["title"] = "Editar Curso";
+    var dados = ViewData["curso"] as Modelos.Cursos;
+    var departamento = ViewData["departamento"] as List<Modelos.Departamentos>;
+    var formacao = ViewData["formacao"] as List<Modelos.Formacao>;
+
+}
+
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Editar registro de Curso</h1>
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div class="row container">
+                <form method="post" enctype="multipart/form-data" class="col s12 container">
+
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="modelo.NomeCurso" id="titulo" value="@dados.NomeCurso" type="text" class="validate" required>
+                            <label for="titulo">Nome do Curso</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchimento Obrigatório</span>
+                        </div>
+                        <div class="input-field col s12">
+                            <textarea asp-for="modelo.Descricao" type="text" id="descricao" class="materialize-textarea validate" required></textarea>
+                            <label for="titulo">Descrição do Curso</label>
+                            <span class="helper-text" data-error="Preencha o campo" data-success="Concluido">(*) Preenchimento Obrigatório</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select id="disciplinas" asp-for="modelo.DepartamentoID">
+                                <option value="" disabled selected>Escolher departamento</option>
+                                @foreach (var item in departamento)
+                                {
+                                    if (item.ID == dados.DepartamentoID)
+                                    {
+                                        <option selected value="@item.ID">@item.NomeDepartamento</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.NomeDepartamento</option>
+                                    }
+                                    
+                                }
+                            </select>
+                            <label for="disciplinas">Departamento</label>
+                        </div>
+                        <div class="input-field col s16">
+                            <select id="disciplinas" asp-for="modelo.FormacaoID">
+                                <option value="" disabled selected>Escolher formação</option>
+                                @foreach (var item in formacao)
+                                {
+                                    if (item.ID == dados.FormacaoID)
+                                    {
+                                        <option selected value="@item.ID">@item.NomeFormacao</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.NomeFormacao</option>
+                                    }
+                                   
+                                }
+                            </select>
+                            <label for="disciplinas">Formação</label>
+                        </div>
+
+                        <div class="input-field col">
+                            <select id="disciplinas" asp-for="modelo.Ativo">
+                                <option value="" disabled selected>Escolher estado do curso</option>
+                                @if(dados.Ativo)
+                                {
+                                    <option value="true" selected>Activo</option>
+                                    <option value="false">Inativo</option>
+                                }
+                                else
+                                {
+                                    <option value="false">Inativo</option>
+                                    <option value="true" selected>Activo</option>
+                                }
+                               
+                                
+                            </select>
+                            <label for="disciplinas">Estado do Curso</label>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="card col s4">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img class="activator" src="@dados.CapaCurso.Extensao">
+                            </div>
+                        </div>
+                       @*  <div class="col s4">
+                           <img src="@dados.CapaCurso.Extensao" style="width:80%" id="thumbnail"/>
+                        </div> *@
+                        <div class="file-field input-field col s4">
+                            <div class="btn red">
+                                <input type="hidden" value="@dados.CapaCurso.ID" asp-for="modelo.CapaCurso.ID"/>
+                                <span><i class="material-icons">panorama</i></span>
+                                <input id="foto" type="file" asp-for="modelo.CapaCurso.Caminho">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Escolher outra Imagem de capa">
+                            </div>
+                        </div>
+                        <div class="file-field input-field col s4">
+                            <div class="btn red">
+                                <span><i class="material-icons">picture_as_pdf</i></span>
+                                <input type="hidden" value="@dados.ArquivoCurso.ID" asp-for="modelo.ArquivoCurso.ID"/>
+                                <input type="file" asp-for="modelo.ArquivoCurso.Caminho" accept="application/pdf">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Escolher outro Arquivo PDF da Grade">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="hidden" asp-for="modelo.ID" value="@dados.ID"/>
+                            <button class="btn btn-large orange"> <i class="small material-icons">send</i> Salvar Edição </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var textarea = document.getElementById('descricao');
+    textarea.value = '@Html.Raw(@dados.Descricao)';
+    M.textareaAutoResize(textarea);  // Recalcula o tamanho do textarea
+
+</script>
+<script>
+    const saveButton = document.getElementById('saveButton');
+
+    document.getElementById('foto').addEventListener('change', function (e) {
+        showThumbnail(this.files);
+    });
+
+    function showThumbnail(files) {
+        if (files && files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('thumbnail').src = e.target.result;
+            };
+            reader.readAsDataURL(files[0]);
+            saveButton.disabled = false;
+        }
+    }
+</script>
+@section Scripts {
+    @Html.Raw(Html.SweetConfirmAlert("Deletar Funcionário", "Tem certeza que quer deletar este funcionário?"));
+}
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+            @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

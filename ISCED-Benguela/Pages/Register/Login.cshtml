@@ -1,0 +1,135 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@model ISCED_Benguela.Pages.Register.LoginModel
+@{
+    ViewData["Title"] = "Iniciar Sessão";
+}
+<main id="main">
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs" data-aos="fade-in">
+    <div class="container">
+        <h2>Início de Sessão Individual</h2>
+        <p>Aceda a sua conta e desfrute da melhor experiência. </p>
+    </div>
+</div><!-- End Breadcrumbs -->
+
+    <div class="site-wrap d-md-flex align-items-stretch">
+        <div class="bg-img" style="background-image: url('/img/login-background.jpg')"></div>
+        <div class="form-wrap">
+            <div class="form-inner">
+
+                <form method="post" class="pt-3">
+                    <div class="form-floating">
+                        <input type="email" asp-for="Usuario" required class="form-control" id="email" placeholder="info@example.com">
+                        <label for="email">Correio Electrônico</label>
+                    </div>
+
+                    <div class="form-floating">
+                        <span class="password-show-toggle js-password-show-toggle"><span class="uil"></span></span>
+                        <input type="password" asp-for="Password" required class="form-control" id="password" placeholder="Password">
+                        <label for="password">Palavra-Passe</label>
+                    </div>
+
+                    
+                    <div class="d-grid gap-4 mb-4">
+                        <button type="submit" class="btn btn-primary">Log in</button>
+                        <button type="button" class="btn btn-primary green" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Criar Conta</button>
+                        <hr />
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="form-check">
+                            <input type="checkbox" asp-for="Rember" class="form-check-input" value="true" id="remember">
+                            <input type="hidden" value="false" asp-for="Rember">
+                            <label for="remember" class="form-check-label">Lembre-me sempre</label>
+                        </div>
+                        <div><a href="#">Esqueceu a senha?</a></div>
+                    </div>
+
+
+                 @*    <div class="d-flex justify-content-between">
+                        <div class="form-check">
+                            <label for="remember" class="form-check-label">Não tem uma conta? </label>
+                        </div>
+                        <div><a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Criar Conta</a></div>
+                    </div> *@
+
+                    
+
+                    @* <div class="social-account-wrap">
+                        <h4 class="mb-4"><span>Ou Continue com</span></h4>
+                        <ul class="list-unstyled social-account d-flex justify-content-between">
+                            <li><a href="#"><i class="bi bi-google"></i></a></li>
+                            <li><a href="#"><i class="bi bi-facebook"></i></a></li>
+                            <li><a href="#"><i class="bi bi-apple"></i></a></li>
+                        
+                        </ul>
+                    </div> *@
+                 
+
+                </form>
+            </div>
+        </div>
+    </div>
+    @{
+        if (TempData["SuccessMessage"] != null)
+        {
+            if ((bool)TempData["SuccessMessage"])
+            {
+                @Html.Raw(Html.SweetAlert("Login Feito com Sucesso","Login In",Modelos.Enums.alertType.success ));
+            }
+            else
+            {
+                @Html.Raw(Html.SweetAlert(TempData["SuccessMessageContent"]?.ToString()!, "Login In", Modelos.Enums.alertType.error))
+                ;
+            }
+        }
+    }
+
+  
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Criar Conta</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   <div class="d-grid gap-4">
+                        <h2><b>Selecione sua opção</b></h2>
+                        <a class="btn btn-primary" asp-page="/Register/StudentRegister"><i class="bi bi-arrow-right-square"></i>   Inscrever Como Aluno</a>
+                        <a class="btn btn-primary" asp-page="/Register/TeacherRegister"><i class="bi bi-arrow-right-square"></i>   Inscrever Como Professor</a>
+                   </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  </main>
+
+<script>
+    var modal = document.getElementById("myModal");
+    var span = document.getElementsByClassName("close")[0];
+
+    function openModal() {
+        modal.style.display = "block";
+    }
+
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+</script>
+
+ 
+           

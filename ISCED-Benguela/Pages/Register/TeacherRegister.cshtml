@@ -1,0 +1,195 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Register.TeacherRegisterModel
+@{
+}
+<!-- Section: Design Block -->
+<section class="text-center">
+    <!-- Background image -->
+    <div class="p-5 bg-image" style="
+        background-image: url('https://www.online-paralegal-programs.com/wp-content/uploads/2019/07/philosophy-major-to-law-school.png');
+        height: 300px;
+        "></div>
+    <!-- Background image -->
+
+    <div class="card mx-4 mx-md-5 shadow-5-strong" style="
+        margin-top: -100px;
+        background: hsla(0, 0%, 100%, 0.8);
+        backdrop-filter: blur(30px);
+        ">
+        <div class="card-body py-5 px-md-5">
+
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="fw-bold mb-5">Inscrevendo-se Como Professor</h2>
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        <!-- 2 column grid layout with text inputs for the first and last names -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div  class="form-floating">
+                                    <input required asp-for="ModeloProfessor.Nome" type="text" id="nome" class="form-control" placeholder="Nome"/>
+                                    <label  for="nome">Nome</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div  class="form-floating">
+                                    <input asp-for="ModeloProfessor.Sobrenome" required="O campo sobrenome é de preenchimento obrigatorio" type="text" id="sobrenome" class="form-control" placeholder="Sobrenome" />
+                                    <label  for="sobrenome">Sobrenome</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div  class="form-floating">
+                                    <input asp-for="ModeloProfessor.Nacionalidade" type="text" id="nacionalidade" class="form-control" placeholder="Nacionalidade" />
+                                    <label  for="nacionalidade">Nacionalidade</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div  class="form-floating">
+                                    <input asp-for="ModeloProfessor.Morada.Cidade" type="text" id="morada" class="form-control" placeholder="Morada" />
+                                    <label  for="morada">Morada</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div  class="mb-4 form-floating">
+                            <input asp-for="ModeloProfessor.DataNascimento" type="date" id="datanscimento" class="form-control" placeholder="Data de Nascimento" />
+                            <label  for="datanascimento">Data De Nascimento</label>
+                        </div>
+
+
+                        <!-- Email input -->
+                        <div class="mb-4 form-floating">
+                            <input asp-for="ModeloProfessor.Contacto.Email" type="email" id="email" class="form-control" placeholder="Correio electrônico" required/>
+                            <label  for="email">Correio Electronico</label>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class=" mb-4 form-floating">
+                            <span class="password-show-toggle js-password-show-toggle"><span class="uil"></span></span>
+                            <input asp-for="ModeloProfessor.RegisterLogin.Password" required type="password" id="password" class="form-control" placeholder="Password" />
+                            <label  for="password">Password</label>
+                        </div>
+                        <div  class="mb-4 form-floating">
+                         
+                            <select  id="departamentoID"  class="form-select" aria-label="Nenhum" asp-for="ModeloProfessor.DepartamentosID">
+                                <option selected>Nenhuma</option>
+                                @foreach(var item in Model.departamentos){
+                                     <option value="@item.ID">@item.NomeDepartamento</option>
+                                }
+                            </select>
+                            <label>Departamento</label>
+                        </div>
+                      
+                       <!--Redes Sociais-->
+                        <!-- 2 column grid layout with text inputs for the first and last names -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-floating">
+                                    <input  asp-for="ModeloProfessor.Redes.Facebook" type="url" id="fb" class="form-control" placeholder="Url Facebook" />
+                                    <label for="fb">Facebook</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-floating">
+                                    <input asp-for="ModeloProfessor.Redes.Instagram"  type="url" id="insta" class="form-control" placeholder="Url Instagram" />
+                                    <label for="insta">Instagram</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-floating">
+                                    <input asp-for="ModeloProfessor.Redes.Youtube" type="text" id="yout" class="form-control" placeholder="Url Youtube" />
+                                    <label for="youte">Youtube</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-floating">
+                                    <input asp-for="ModeloProfessor.Redes.Linkedin" type="url" id="linkedin" class="form-control" placeholder="Url Linkedin" />
+                                    <label for="morada">Linkedin</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Textarea-->
+                        <div class=" mb-4 form-floating">
+                            <textarea asp-for="ModeloProfessor.Bibliografia" required  id="biblio" class="form-control" placeholder="Bibliografia" ></textarea>
+                            <label for="biblio">Bibliografia</label>
+                        </div>
+                        <!--Input file-->
+                        <div class=" mb-4 form-floating">
+                            <input id="foto" asp-for="ModeloProfessor.Foto.Caminho" class="form-control" placeholder="Bibliografia"/>
+                            <label class="btn" for="foto">Escolher Foto</label>
+                        </div>
+                        <!-- Checkbox -->
+                        <div class="form-check d-flex justify-content-center mb-4 ">
+                            <input class="form-check-input me-2" type="checkbox" asp-for="AcceptTermo" value="true" id="termos" checked />
+                            <input class="form-check-input me-2" type="hidden" asp-for="AcceptTermo" value="false" id="termos" />
+                            <label class="form-check-label" for="termos">
+                                Concordar com nossos termos e participar em nossa newsletter
+                            </label>
+                        </div>
+
+                        <!-- Submit button -->
+                        <div class="d-grid mb-4">
+                            <button type="submit" name="submitButton" class="btn btn-primary">Registrar Agora</button>
+                        </div>
+                         
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"])
+        {
+            @Html.Raw(Html.SweetAlert("Sua Inscrição foi feita com sucesso", "Cadastro de Professor", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert("Sua Inscrição Não foi feita, por favor, verifique seus dados", "Cadastro de Professor", alertType.error))
+            ;
+        }
+
+    }
+}
+
+@section Scripts {
+    <script>
+    
+        $(document).ready(
+
+            function () {
+                $("#departamentoID").change(
+
+                    function () {
+                        var depID = $(this).val();
+                   
+                        
+                        //chamada ajax para requisição
+                        $.ajax(
+                            {
+                                url:'https://localhost:5178/Register/TeacherRegister?handler=CarregarDisciplinas',
+                                type:'GET',
+                                data: {depId=depID},
+                                success: function(data){
+                                    console.info("Sucesso");
+                                },
+                                error: function (xhr,status,error) 
+                                {
+                                    console.error(xhr.responseText);
+                                }
+                            }
+                        );
+                    });
+            });
+
+        
+    </script>
+}
+
+<!-- Section: Design Block -->

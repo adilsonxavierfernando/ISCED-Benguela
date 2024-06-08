@@ -1,0 +1,204 @@
+﻿@using System.Security.Claims
+@using ISCED_Benguela.Encapsulamento
+<!DOCTYPE html>
+<html lang="pt-AO">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="description" content="">
+    <title>@ViewData["Title"] - ISCED-Benguela</title>
+   @*  <link href="/MaterialLib/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet"> *@
+    <link href="/MaterialLib/cdn/shop/t/1/assets/jqvmap.css?v=162757563705857184351528499283" rel="stylesheet">
+    <link href="/MaterialLib/cdn/shop/t/1/assets/flag-icon.min.css?v=107574258948483483761528499307" rel="stylesheet">
+    <!-- Fullcalendar-->
+    <link href="/MaterialLib/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" rel="stylesheet">
+    <!-- Materialize-->
+    <link href="/MaterialLib/cdn/shop/t/1/assets/admin-materialize.min.css?v=88505356707424191531528497992" rel="stylesheet">
+    <!-- Material Icons-->
+    <link href="/MaterialLib/icon.css" rel="stylesheet">
+
+    <script>window.performance && window.performance.mark && window.performance.mark('shopify.content_for_header.start');</script>
+    <meta id="shopify-digital-wallet" name="shopify-digital-wallet" content="/17758583/digital_wallets/dialog">
+    <meta name="shopify-checkout-api-token" content="6aacc581eb2b41d74f03c38d3c985dba">
+    <meta id="in-context-paypal-metadata" data-shop-id="17758583" data-venmo-supported="true" data-environment="production" data-locale="en_US" data-paypal-v4="true" data-currency="USD">
+    <script async="async" src="/MaterialLib/checkouts/internal/preloads.js?locale=en-AO"></script>
+    <script async="async" src="/MaterialLib/checkouts/internal/preloads-1.js?locale=en-AO&shop_id=17758583" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jodit/4.0.1/es2021/jodit.min.css" />
+    <link href="~/css/speech-recognize.min.css" rel="stylesheet" />
+    <link href="~/css/jodit.min.css" rel="stylesheet" />
+    <script src="~/js/sweetalert.min.js"></script>
+    <script src="~/js/jodit.min.js"></script>
+    <script src="~/js/speech-recognize.min.js"></script>
+   @*  <link href="~/css/datatables.bootstrap4.min.css" rel="stylesheet" /> *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.material.css" />
+    <link href="https://cdn.datatables.net/v/dt/dt-2.0.7/r-3.0.2/datatables.min.css" rel="stylesheet">
+   @*  <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" /> *@
+    <link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body class="has-fixed-sidenav">
+    <header>
+        <div class="navbar-fixed">
+            <nav class="navbar deep-orange darken-4 white-text">
+                <div class="nav-wrapper">
+                    <a asp-page="/Admin/Index" class="brand-logo brown-text text-darken-4">Início</a>
+                    @if (User.IsInRole("Professor")){
+                    <ul id="nav-mobile" class="right">
+                        <li class="hide-on-med-and-down"><a href="#!" data-target="dropdown1" class="dropdown-trigger waves-effect"><i class="material-icons">notifications</i></a></li>
+                        <li><a href="#!" data-target="chat-dropdown" class="dropdown-trigger waves-effect"><i class="material-icons">chat</i></a></li>
+                    </ul>
+                    }
+                   <a href="#!" data-target="sidenav-left" class="sidenav-trigger left"><i class="material-icons black-text">menu</i></a>
+                </div>
+            </nav>
+        </div>
+        @{
+            string Titulo = "Portal de Administrador";
+            if (User.IsInRole("Professor"))
+                Titulo = "Portal do Professor";
+        }
+        <ul id="sidenav-left" class="sidenav sidenav-fixed orange darken-4 white-text">
+            <li><a asp-page="/Admin/Index" class="logo-container">@Titulo</a></li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="bold waves-effect active">
+                            <a class="collapsible-header">Site<i class="material-icons chevron">chevron_left</i></a>
+                            <div class="collapsible-body">
+                                <ul>
+                                    @*<li><a asp-page="/Admin/InfoSite/Banner/Index" class="waves-effect active">Modificar Banner<i class="material-icons">edit</i></a></li>*@
+                                    <li><a asp-page="/Admin/InfoSite/Index" class="waves-effect">Trocar Info de Contactos<i class="material-icons">edit</i></a></li>
+                                    @*// <li><a asp-page="/Admin/InfoSite/Banner/Index" class="waves-effect">Porquê nos escolher?<i class="material-icons">touch_app</i></a></li> *@
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="bold waves-effect">
+                            <a class="collapsible-header">Departamental<i class="material-icons chevron">chevron_left</i></a>
+                            <div class="collapsible-body">
+                                <ul>
+                                    <li><a asp-page="/Admin/Departamentos/Index" class="waves-effect">Departamentos<i class="material-icons">add</i></a></li>
+                                    <li><a asp-page="/Admin/EquipeGestao/Index" class="waves-effect">Equipe de Gestão<i class="material-icons">add</i></a></li>
+                                    <li><a asp-page="/Admin/Formacao/Index" class="waves-effect">Formação<i class="material-icons">add</i></a></li>
+                                    <li><a asp-page="/Admin/Formacao/Cursos/Index" class="waves-effect">Cursos<i class="material-icons">equalizer</i></a></li>
+                                    <li><a asp-page="/Admin/Formacao/Disciplina/Index" class="waves-effect">Disciplinas<i class="material-icons">add</i></a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="bold waves-effect">
+                            <a class="collapsible-header">Intervenientes<i class="material-icons chevron">chevron_left</i></a>
+                            <div class="collapsible-body">
+                                <ul>
+                                    <li><a asp-page="/Admin/Intervenientes/Professores" class="waves-effect">Professores<i class="material-icons">list</i></a></li>
+                                    <li><a asp-page ="/Admin/Intervenientes/Estudantes" class="waves-effect">Estudantes<i class="material-icons">list</i></a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                    
+                    
+                 
+                 
+                    <li class="bold waves-effect">
+                        <a class="collapsible-header">Conta<i class="material-icons chevron">chevron_left</i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                @if (User.IsInRole("Anonymous"))
+                                {
+                                    <li><a asp-page="/Admin/Perfil/Account" class="waves-effect">Criar Novo Usuário<i class="bi bi-person-fill-add"></i></a></li>
+                                }
+                               
+                                <li><a asp-page="/Admin/Perfil/Index" class="waves-effect">Perfil<i class="material-icons">person</i></a></li>
+                                <li><a asp-page="/Register/Login" asp-page-handler="Logout" class="waves-effect">Log Out<i class="material-icons">logout</i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <hr />
+            <div class="card">
+                
+                <div class="row">
+                    <div class="col center">
+                        <br />
+                        <img class="materialize-logo" src="~/img/favicon.jpeg" alt="Logo Isced" style="width:80px">
+                        <p class="align-center">Instituto Superior de Ciencias da Educação de Benguela.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"><</button>
+            </div>
+        </ul>
+          <!-- #region perfil -->
+        <!--Drop de notificações-->
+        @if (User.IsInRole("Professor"))
+        {
+            @await Component.InvokeAsync("Notification", new { id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value })
+            ;
+
+            <!--Drop de Chat-->
+           @await Component.InvokeAsync("MenuPerfil", new { id =User.FindFirst(ClaimTypes.NameIdentifier)?.Value })
+            ;
+            <!-- #endregion -->
+        }
+
+        
+       
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer class="page-footer">
+        <p class="center">Copyright &copy; Isced-Benguela 2024</p>
+    </footer>
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/MaterialLib/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+    <!-- External libraries -->
+    <!-- jqvmap -->
+ 
+    <script type="text/javascript" src="/MaterialLib/cdn/shop/t/1/assets/jquery.vmap.min.js?v=163123838929084484541528498367"></script>
+    <script type="text/javascript" src="/MateriaLib/cdn/shop/t/1/assets/jquery.vmap.world.js?v=72513650592694871481528498398" charset="utf-8"></script>
+    <script type="text/javascript" src="/MaterialLib/cdn/shop/t/1/assets/jquery.vmap.sampledata.js?v=87023629870755566851528498384"></script>
+    <script src="~/css/datatables.bootstrap4.min.js"></script>
+    <!-- ChartJS -->
+    <script type="text/javascript" src="/MaterialLib/cdn/shop/t/1/assets/Chart.js?v=28848919051585277061528498087"></script>
+    <script type="text/javascript" src="/MaterialLib/cdn/shop/t/1/assets/Chart.Financial.js?v=34644991646752552951528498109"></script>
+
+
+    <script src="/MaterialLib/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+    // <script type="text/javascript" src="/MaterialLib/v/dt/dt-1.10.16/datatables.min.js"></script>
+    <script src="/MaterialLib/cdn/shop/t/1/assets/imagesloaded.pkgd.min.js?v=58819771796763510541528498326"></script>
+    <script src="/MaterialLib/cdn/shop/t/1/assets/masonry.pkgd.min.js?v=180312904682597569011528498229"></script>
+
+
+    <!-- Initialization script -->
+    <script src="/MaterialLib/cdn/shop/t/1/assets/dashboard.min.js?v=4816808830627109061528498722"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jodit/4.0.1/es2021/jodit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.material.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.tooltipped').tooltip({ delay: 50 });
+        });
+    </script>
+ 
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

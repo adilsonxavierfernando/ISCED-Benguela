@@ -1,0 +1,107 @@
+﻿@page
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.ProffileModel
+@{
+    ViewData["Title"] = "Meu Perfil";
+    var dados = ViewData["perfil"] as Modelos.Estudantes;
+}
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" data-aos="fade-in">
+        <div class="container">
+            <h2>Meu Perfil </h2>
+            <p>Seja Bem Vindo ao seu Perfil, <b>@dados.Nome</b> </p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+  <!-- ======= Contact Section ======= -->
+            <div class="container" data-aos="fade-up">
+        <form method="post" enctype="multipart/form-data">
+                <div class="row mt-5">
+            <div class="card col s4" style="width: 18rem;">
+                <img id="thumbnail" src="@dados.Avatar.Extensao" class="card-img-top" alt="foto de perfil @dados.Nome">
+                <div class="card-body d-grid gap-4">
+                    <input type="hidden" asp-for="modelo.Avatar.ID" value="@dados.Avatar.ID" />
+                    <input style="display:none" id="foto" type="file" asp-for="modelo.Avatar.Caminho" accept="image/png, image/jpg, image/jpeg, image/gif, image/tif">
+                    <label class="d-grid" for="foto">
+                        <span class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Alterar Imagem</span>
+                    </label>
+                  
+                </div>
+            </div>
+                    <div class="col-lg-8 mt-5 mt-lg-0">
+
+                       
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                            <label for="inputPassword6" class="col-form-label">Nome do Estudante</label>
+                                    <input type="text" asp-for="modelo.Nome" value="@dados.Nome" class="form-control" id="name" placeholder="Nome do Estudante" required>
+                                 
+                                </div>
+                                <div class="col-md-6 form-group mt-3 mt-md-0">
+                            <label for="inputPassword6" class="col-form-label">Sobrenome</label>
+                                    <input type="text" class="form-control" value="@dados.Sobrenome" asp-for="modelo.Sobrenome" id="email" placeholder="Sobrenome" required>
+                                
+                                </div>
+                            </div>
+                     
+                    <div class="d-grid gap-4">
+                        <div class="form-group mt-3">
+                            <label for="inputPassword6" class="col-form-label">E-mail</label>
+                            <input type="email" class="form-control" value="@dados.RegisterLogin.Usuario" asp-for="modelo.RegisterLogin.Password" id="subject" placeholder="E-mail/usuario" required>
+
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="inputPassword6" class="col-form-label">Password</label>
+                            <input type="text" class="form-control" value="@dados.RegisterLogin.Password" asp-for="modelo.RegisterLogin.Password" id="subject" placeholder="Password" required>
+
+                        </div>
+                        <input type="hidden" value="@dados.ID" asp-for="modelo.ID"/>
+                        <button class="btn btn-primary" type="submit">Salvar Alterações</button>
+                    </div>
+                  
+
+                    </div>
+
+                </div>
+        </form>
+            </div>
+        </section>
+
+    <script>
+        const saveButton = document.getElementById('saveButton');
+
+        document.getElementById('foto').addEventListener('change', function (e) {
+            showThumbnail(this.files);
+        });
+
+        function showThumbnail(files) {
+            if (files && files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('thumbnail').src = e.target.result;
+                };
+                reader.readAsDataURL(files[0]);
+                saveButton.disabled = false;
+            }
+        }
+    </script>
+
+</main><!-- End #main -->
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"])
+        {
+            @Html.Raw(Html.SweetAlert("Seu Perfil Foi Modificado!", "Meu Perfil", alertType.success))
+            ;
+        }
+        else
+        {
+            @Html.Raw(Html.SweetAlert("Seu perfil não foi modificado", "Meu Perfil", alertType.error))
+            ;
+        }
+
+    }
+}

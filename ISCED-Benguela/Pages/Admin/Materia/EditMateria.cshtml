@@ -1,0 +1,163 @@
+﻿@page
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Materia.EditMateriaModel
+@{
+    Layout = "_Layout-admin";
+    ViewData["Title"] = "Editar Matéria";
+    var dados = ViewData["materia"] as Modelos.Materia;
+}
+<div class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Editar Matéria</h1>
+        <a class="btn large deep-orange darken-4" asp-page="/Admin/Materia/Index"> <i class="small material-icons">arrow_back</i> Voltar</a>
+    </div>
+    <!-- Basic Card Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Informações da Noticia por Editar</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <form method="post" enctype="multipart/form-data" class="col s12">
+
+                    <input type="hidden" value="@dados.ProfessorID" asp-for="model.ProfessorID" />
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input asp-for="model.Titulo" value="@dados.Titulo" id="titulo" type="text" class="validate" required>
+                            <label for="titulo">Titulo da Materia</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select id="departamento" asp-for="model.DepartamentosID">
+                                <option value="" disabled selected>Escolher departamento</option>
+                                @foreach (var item in Model.lstDepartamento)
+                                {
+                                    if (item.ID == dados.DepartamentosID)
+                                    {
+                                        <option value="@item.ID" selected>
+                                            @item.NomeDepartamento
+                                        </option>
+                                    }
+                                      else
+                                    {
+                                        <option value="@item.ID">@item.NomeDepartamento</option>
+                                    }
+                                  
+                                }
+                            </select>
+                            <label for="departamento">Departamento</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <select id="disciplinas" asp-for="model.DisciplinaID">
+                                <option value="" disabled selected>Escolher disciplina</option>
+                                @foreach (var item in Model.lstDisciplinas)
+                                {
+                                    if (item.ID==dados.DisciplinaID)
+                                    {
+                                        <option value="@item.ID" selected>@item.NomeDisciplina</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.NomeDisciplina</option>
+                                    }
+                                   
+                                }
+                            </select>
+                            <label for="disciplinas">Disciplina</label>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="input-field col s12">
+                            <div class="input-field col s12">
+                                @*        <label for="editor">Conteudo Resumido da Matéria</label> *@
+                                <textarea id="editor" asp-for="model.Conteudo"   class="materialize-textarea">@dados.Conteudo gdfgdfg</textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="file-field input-field col s6">
+                            <div class="btn white">
+                                <div class="chip">
+                                    <img src="@dados.Capa.Extensao" alt="Imagem da materia" id="thumbnail">
+                                    Clique para escolher uma imagem nova se quiser
+                                </div>
+                                
+                                <input id="foto" type="file" asp-for="model.Capa.Caminho" accept="image/png, image/jpg, image/jpeg, image/gif, image/tif">
+                                <input type="hidden" asp-for="model.Capa.ID" value="@dados.Capa.ID"/>
+
+                                <script>
+                                    const saveButton = document.getElementById('saveButton');
+
+                                    document.getElementById('foto').addEventListener('change', function (e) {
+                                        showThumbnail(this.files);
+                                    });
+
+                                    function showThumbnail(files) {
+                                        if (files && files[0]) {
+                                            var reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                document.getElementById('thumbnail').src = e.target.result;
+                                            };
+                                            reader.readAsDataURL(files[0]);
+                                            saveButton.disabled = false;
+                                        }
+                                    }
+                                </script>
+                            </div>
+                        </div>
+
+                        <div class="file-field input-field col s6">
+                            <div class="btn red">
+                                <span>  <i class="small material-icons">picture_as_pdf</i></span>
+                                <input type="file" asp-for="model.Arquivo.Caminho" accept="application/pdf">
+                                <input type="hidden" value="@dados.Arquivo.ID" asp-for="model.Arquivo.ID"/>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Substituir artigo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="hidden" value="@dados.ID" asp-for="model.ID"/>
+                            <button class="btn btn-large red">Editar Matéria</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @{
+        if (TempData["successAlert"] is not null)
+        {
+            if ((bool)TempData["successAlert"])
+            {
+                    @Html.Raw(Html.SweetAlert("Sua Matéria foi publica com Sucesso", "Publicação de Matéria", alertType.success))
+                ;
+            }
+            else
+            {
+                    @Html.Raw(Html.SweetAlert("Sua Materia não foi publicada", "Publicação de Matéria", alertType.error))
+                ;
+            }
+
+        }
+    }
+</div>
+
+@section Scripts {
+    <script>
+        const editor = Jodit.make("#editor");
+        let texto ='@Html.Raw(dados.Conteudo)';
+        editor.value=texto;
+        
+        
+    
+
+    </script>
+}

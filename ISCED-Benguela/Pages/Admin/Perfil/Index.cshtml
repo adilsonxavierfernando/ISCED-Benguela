@@ -1,0 +1,320 @@
+﻿@page
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model ISCED_Benguela.Pages.Admin.Perfil.IndexModel
+@{
+    ViewData["title"] = "Perfil";
+    Layout = "_Layout-admin";
+    var dados = ViewData["Professor"] as Modelos.Professores;
+   
+}
+
+<main>
+    <div class="section container">
+        @if (User.IsInRole("Professor"))
+        {
+            if (ViewData["Professor"] is not null)
+            {
+               
+                <div class="row">
+                    <div class="col s12 m4">
+                        <span class="settings-title">Dados Pessoais</span>
+                        <p>Dados Básicos do Professor cadastrado. </p>
+                    </div>
+                    <div class="col s12 m8">
+
+                        <div class="settings-group">
+                            <div class="setting">
+                                Estado do Chat
+
+                                <div class="switch right">
+                                    @if (dados.Ativo)
+                                    {
+                                        <label>
+                                            <input type="checkbox" checked disabled>
+                                            <span class="lever"></span>
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label>
+                                            <input type="checkbox" disabled>
+                                            <span class="lever"></span>
+                                        </label>
+                                    }
+
+                                </div>
+                            </div>
+                            <ul class="collapsible setting">
+                                <li>
+                                    <div class="collapsible-header" tabindex="0">
+                                        <span>Dados Pessoais</span>
+                                        <i class="material-icons caret right">keyboard_arrow_right</i>
+                                    </div>
+                                    <div class="collapsible-body">
+                                          <form method="post" asp-page-handler="GeralUpdate">
+                                        <div class="row">
+                                            <div class="input-field col s6">
+                                                <input placeholder="Placeholder" id="first_name" type="text" class="validate" value="@dados.Nome" asp-for="professorModel.Nome">
+                                                <label for="first_name">Nome</label>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                    <input id="last_name" type="text" class="validate" value="@dados.Sobrenome" asp-for="professorModel.Sobrenome">
+                                                <label for="last_name">Sobrenome</label>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="input-field col s12">
+                                                        <input type="text" class="validate" placeholder="Placeholder" value="@dados.Bibliografia" asp-for="professorModel.Bibliografia">
+                                                    <label for="disabled">Bibliografia</label>
+                                                </div>
+                                            </div>
+                                                <input type="hidden" value="@dados.ID" asp-for="professorModel.ID"/>
+                                            <button class="btn col s12">Alterar Dados Pessoais</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="collapsible-header" tabindex="0"><i class="material-icons">place</i>Endereço</div>
+                                    <div class="collapsible-body">
+                                        <div class="row">
+                                            <form method="post" asp-page-handler="EnderecoUpdate">
+                                                <div class="input-field col s6">
+                                                    <i class="bi bi-pin-map-fill"></i>
+                                                    <input id="icon_prefix" type="text" class="validate" value="@dados.Morada.Bairro" asp-for="professorModel.Morada.Bairro">
+                                                    <label for="icon_prefix">Bairro</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <i class="bi bi-pin-map-fill"></i>
+                                                    <input id="icon_telephone" type="text" class="validate" value="@dados.Morada.Cidade" asp-for="professorModel.Morada.Cidade">
+                                                    <label for="icon_telephone">Cidade</label>
+
+                                                </div>
+                                                <div class="input-field col s12">
+                                                    <i class="bi bi-pin-map-fill"></i>
+                                                    <input id="icon_telephone" type="text" class="validate" value="@dados.Morada.Localizacao" asp-for="professorModel.Morada.Localizacao">
+                                                    <label for="icon_telephone">Localização</label>
+                                                </div>
+                                                <input type="hidden" value="@dados.Morada.ID" asp-for="professorModel.Morada.ID"/>
+                                                <button class="btn col s12">Alterar Endereço</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                  
+                                    <div class="collapsible-header" tabindex="0"><i class="material-icons">whatshot</i>Redes Sociais</div>
+                                  
+                                    <div class="collapsible-body">
+                                          <form method="post" asp-page-handler="SocialUpdate">
+                                        <div class="row">
+                                            <div class="input-field col s6">
+                                                <i class="bi bi-facebook"></i>
+                                                <input id="icon_prefix" type="url" class="validate" value="@dados.Redes?.Facebook" asp-for="professorModel.Redes.Facebook">
+                                                <label for="icon_prefix">Facebook</label>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <i class="bi bi-instagram"></i>
+                                                    <input id="icon_telephone" type="url" class="validate" value="@dados.Redes?.Instagram" asp-for="professorModel.Redes.Instagram">
+                                                <label for="icon_telephone">Instagram</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s6">
+                                                <i class="bi bi-linkedin"></i>
+                                                    <input id="icon_prefix" type="url" class="validate" value="@dados.Redes?.Linkedin" asp-for="professorModel.Redes.Linkedin">
+                                                <label for="icon_prefix">Linkedin</label>
+                                            </div>
+                                            <div class="input-field col s6">
+
+                                                <i class="bi bi-youtube"></i>
+                                                    <input id="icon_telephone" type="url" class="validate" value="@dados.Redes?.Youtube" asp-for="professorModel.Redes.Youtube">
+                                                <label for="icon_telephone">Youtube</label>
+                                            </div>
+                                                <input type="hidden" value="@dados.Redes?.ID" asp-for="professorModel.Redes.ID" />
+                                            <button class="btn col s12">Alterar Redes Sociais</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                               
+                                </li>
+                            </ul>
+                            <div class="setting">
+                                <form method="post" asp-page-handler="FotoUpdate" enctype="multipart/form-data">
+                                Trocar Foto
+
+                                <label class="right">
+                                    <input id="foto" type="file" class="filled-in" style="display:none" asp-for="Caminho">
+                                    <input type="hidden" value="@dados.Foto.ID" asp-for="idFoto"/>
+                                    <label for="foto">
+                                        <div class="chip">
+                                            <img src="@dados.Foto.Extensao" alt="Contact Person" id="thumbnail">
+                                            Clicar para  Escolher outra
+                                        </div>
+                                    </label>
+                                    <button disabled class="btn" id="saveButton">Salvar</button>
+                                </label>
+                               </form>
+                            </div>
+                            <script>
+                                const saveButton = document.getElementById('saveButton');
+
+                                document.getElementById('foto').addEventListener('change', function(e) {
+                                    showThumbnail(this.files);
+                                });
+
+                                function showThumbnail(files) {
+                                    if (files && files[0]) {
+                                        var reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            document.getElementById('thumbnail').src = e.target.result;
+                                        };
+                                        reader.readAsDataURL(files[0]);
+                                        saveButton.disabled = false;
+                                    }
+                                }
+                            </script>
+                        </div>
+
+                    </div>
+                </div>
+            }
+          
+
+           
+       }
+        <div class="row">
+            <div class="col s12 m4">
+                <span class="settings-title">Dados de Registro</span>
+                <p>Informações de acesso ao portal. </p>
+            </div>
+            <div class="col s12 m8">
+
+                <div class="settings-group">
+                 
+        
+                           <form method="post" asp-page-handler="UsuarioUpdate">
+                            @if (@Model.userModel is not null)
+                            {
+                            <ul class="collapsible setting">
+                                <li>
+                                    <input type="hidden" value="@Model.userModel.ID" asp-for="userModel.ID" />
+                                    <div class="collapsible-header" tabindex="0">
+                                        <span>Dados de Registro</span>
+                                        <i class="material-icons caret right">keyboard_arrow_right</i>
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <div class="input-field">
+                                            <input id="username" value="@Model.userModel.Nome" type="text" class="validate" asp-for="userModel.Nome">
+                                            <label for="username">Nome</label>
+                                        </div>
+                                        <div class="input-field">
+                                            <input id="username" value="@Model.userModel.Sobrenome" type="text" class="validate" asp-for="userModel.Sobrenome">
+                                            <label for="username">Sobrenome</label>
+                                        </div>
+                                        <div class="input-field">
+                                            <input id="username" value="@Model.userModel.RegisterLogin.Usuario" type="text" class="validate" asp-for="userModel.RegisterLogin.Usuario">
+                                            <label for="username">Username</label>
+                                        </div>
+                                    </div>
+                                </li>
+                            <li>
+                                <div class="collapsible-header" tabindex="0">
+                                    <span>Password</span>
+                                    <i class="material-icons caret right">keyboard_arrow_right</i>
+                                </div>
+                                <div class="collapsible-body">
+                                    <div class="input-field">
+                                            <input id="password" asp-for="userModel.RegisterLogin.Password" value="@Model.userModel.RegisterLogin.Password" type="text" class="validate" />
+                                            <label for="password">Password</label>
+                                            <input type="hidden" value="@Model.userModel.RegisterLogin.ID" asp-for="userModel.RegisterLogin.ID" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header" tabindex="0">
+                                    <span>Opção</span>
+                                    <i class="material-icons caret right">keyboard_arrow_right</i>
+                                </div>
+                                <div class="collapsible-body">
+
+                                    <p>
+                                        <button class="btn">Actualizar Registro</button>
+                                    </p>
+
+
+                                </div>
+                            </li>
+                            </ul>
+                            }
+                             </form>
+
+                             <!-- register -->
+                        @if (User.IsInRole("Professor"))
+                        {
+                       
+
+                            <form method="post" asp-page-handler="SenhaUpdate">
+                            <ul class="collapsible setting">
+                                <li>
+                                    <div class="collapsible-header" tabindex="0">
+                                        <span>Password</span>
+                                        <i class="material-icons caret right">keyboard_arrow_right</i>
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <div class="input-field">
+                                            <input id="password" value="@dados.RegisterLogin.Password" type="text" class="validate" asp-for="registerModel.Password" />
+                                            <label for="password">Password</label>
+                                            <input type="hidden" value="@dados.RegisterLogin.ID" asp-for="registerModel.ID"/>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="collapsible-header" tabindex="0">
+                                        <span>Opção</span>
+                                        <i class="material-icons caret right">keyboard_arrow_right</i>
+                                    </div>
+                                    <div class="collapsible-body">
+
+                                        <p>
+                                            <button class="btn">Actualizar Registro</button>
+                                        </p>
+
+
+                                    </div>
+                                </li>
+                            </ul>
+                            </form>
+                                    
+                        }
+
+           
+          
+                   
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+@{
+    if (TempData["successAlert"] is not null)
+    {
+        if ((bool)TempData["successAlert"]!)
+        {
+    @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
+            ;
+        }
+        else
+        {
+    @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
+            ;
+        }
+
+    }
+}

@@ -1,0 +1,148 @@
+﻿@page
+@using System.Security.Claims
+@using ISCED_Benguela.Encapsulamento
+@using ISCED_Benguela.Modelos.Enums
+@model DetalheModel
+@{
+    ViewData["Title"] = Model.MateriaList.Titulo;
+    ViewData["Description"] = Model.MateriaList.Conteudo.Length > 15 ? Model.MateriaList.Conteudo.Substring(0, 15) : Model.MateriaList.Conteudo;
+}
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" data-aos="fade-in">
+        <div class="container">
+            <h2>@Model.MateriaList.Titulo</h2>
+            <p>Acompanhe atentamente cada detalhe do conhecimento. </p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+    <!-- ======= Cource Details Section ======= -->
+    <section id="course-details" class="course-details">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="@Model.MateriaList.Capa.Extensao" class="img-fluid" alt="">
+                    <h3>@Model.MateriaList.Titulo</h3>
+                    <p>@Html.Raw(@Model.MateriaList.Conteudo)</p>
+
+          
+                    @if (User.IsInRole("Aluno"))
+                    {
+                        <div class="section-title">
+                            <h2>Aluno</h2>
+                            <p class="h5">Reação</p>
+                        </div>
+                        <div class="contact" id="contact">
+                            <form  method="post" role="form">
+                                <div class="form-group mt-3 d-flex">
+                                    <input asp-for="Comentario.EstudanteID" type="hidden" value="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value" />
+                                    <input asp-for="Comentario.MateriaID" type="hidden" value="@Model.MateriaList.ID" />
+                                    <textarea asp-for="Comentario.Comentario" class="form-control" rows="5" placeholder="Sua contribuição ou questão..." required></textarea>
+                                    <div class="text-center"><button class="btn btn-primary" type="submit">Enviar Contribuição</button></div>
+                                </div>
+                                <hr />
+                              
+                            </form>
+                        </div>
+                    }
+                    
+
+                </div>
+                <div class="col-lg-4">
+
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Professor</h5>
+                        <p><a href="#">@Model.MateriaList.Professor.Nome @Model.MateriaList.Professor.Sobrenome</a></p>
+                    </div>
+
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Disciplina</h5>
+                        <p>@Model.MateriaList.Disciplina.NomeDisciplina</p>
+                    </div>
+
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Data da Publicação</h5>
+                        <p><time value="@Model.MateriaList.DataPublicacao.Date.ToString("d")">@Model.MateriaList.DataPublicacao.Date.ToString("d")</time></p>
+                    </div>
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Download</h5>
+                        <a href="@Model.MateriaList.Arquivo.Extensao" download="@Model.TituloDownloadFile" class="btn btn-primary text-white"> <i class="bi bi-download"></i> Descarregar Materia</a>
+                    </div>
+
+                </div>
+            </div>
+            <br><br>
+
+
+        </div>
+
+    </section><!-- End Cource Details Section -->
+    <section id="cource-details-tabs" class="cource-details-tabs">
+        <hr />
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <ul class="nav nav-tabs flex-column">
+                        @{
+                            int i = 0;
+                            int y = 0;
+                        }
+                        @foreach (var item in Model.MateriaList.Comentarios)
+                        {
+                            string ative = i == 0 ? "active" : "";
+                            <li class="nav-item">
+                                <a class="nav-link @ative show" data-bs-toggle="tab" href="#tab-@item.ID">@item.Estudante.Nome @item.Estudante.Sobrenome</a>
+                            </li>
+                            i++;
+                        }
+                      
+                 
+                    </ul>
+                </div>
+                <div class="col-lg-9 mt-4 mt-lg-0">
+                    <div class="tab-content">
+                        @foreach (var item in Model.MateriaList.Comentarios)
+                        {
+                            string ative = y == 0 ? "active" : "";
+                            <div class="tab-pane @ative show" id="tab-@item.ID">
+                                <div class="row">
+                                    <div class="col-lg-12 details order-2 order-lg-1">
+                                        <h3>@item.Comentario</h3>
+                                        @foreach (var item1 in item.Respostas)
+                                        {
+                                            <p class="fst-italic"><b>Profº @item.Materia.Professor.Nome: </b>@item1.Resposta</p>
+                                        }
+                                     
+                                    </div>
+                                
+                                </div>
+                            </div>
+                            y++;
+                        }
+                       
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section><!-- End Cource Details Tabs Section -->
+    <!-- ======= Cource Details Tabs Section ======= -->
+    @{
+        if (TempData["successAlert"] is not null)
+        {
+            if ((bool)TempData["successAlert"])
+            {
+                @Html.Raw(Html.SweetAlert("Sua reação a matéria foi enviada", "Reagir a Matéria", alertType.success))
+                ;
+            }
+            else
+            {
+                @Html.Raw(Html.SweetAlert("Sua reação não foi enviada", "Reagir a Matéria", alertType.error))
+                ;
+            }
+
+        }
+    }
+</main><!-- End #main -->
