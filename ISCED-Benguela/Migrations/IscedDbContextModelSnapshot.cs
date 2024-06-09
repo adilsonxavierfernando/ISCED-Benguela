@@ -683,11 +683,13 @@ namespace ISCED_Benguela.Migrations
                 {
                     b.HasOne("ISCED_Benguela.Modelos.Arquivo", "ArquivoCurso")
                         .WithMany()
-                        .HasForeignKey("ArquivoCursoID");
+                        .HasForeignKey("ArquivoCursoID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ISCED_Benguela.Modelos.Capa", "CapaCurso")
                         .WithMany()
-                        .HasForeignKey("CapaCursoID");
+                        .HasForeignKey("CapaCursoID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ISCED_Benguela.Modelos.Departamentos", "Departamento")
                         .WithMany()
@@ -895,7 +897,8 @@ namespace ISCED_Benguela.Migrations
 
                     b.HasOne("ISCED_Benguela.Modelos.RedesSociais", "Redes")
                         .WithMany()
-                        .HasForeignKey("RedesID");
+                        .HasForeignKey("RedesID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ISCED_Benguela.Modelos.Registro", "RegisterLogin")
                         .WithMany()

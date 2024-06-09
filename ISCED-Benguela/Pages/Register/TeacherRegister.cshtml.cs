@@ -61,13 +61,9 @@ namespace ISCED_Benguela.Pages.Register
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return Page();
-                }
 
-                    if (this.AcceptTermo)
-                    {
+                if (this.AcceptTermo)
+                {
                     ModeloProfessor.RegisterLogin.Role = Modelos.Enums.EnumRole.Professor;
                     ModeloProfessor.RegisterLogin.Usuario = ModeloProfessor.Contacto.Email;
 
@@ -78,15 +74,17 @@ namespace ISCED_Benguela.Pages.Register
                         TempData["successAlert"] = true;
                         return RedirectToPage();
                     }
-          
-                        return Page();
-                    }
                     else
                     {
                         TempData["successAlert"] = false;
-                   
+
                         return Page();
                     }
+                }
+                else
+                {
+                    return Page();
+                }
               
             }
             catch (Exception)

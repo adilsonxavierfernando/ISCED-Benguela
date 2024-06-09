@@ -79,5 +79,30 @@ namespace ISCED_Benguela.Pages.Admin.Intervenientes
                 throw;
             }
         }
+
+        //bloquear estudante
+        public async Task<IActionResult> OnGetBloquearAsync(int id)
+        {
+            try
+            {
+                var result = await this.repository.BloquearEstudanteAsync(id);
+                if (result)
+                {
+                    TempData["successAlert"] = true;
+                    TempData["successMessage"] = "Acção concluída com sucesso";
+                }
+                else
+                {
+                    TempData["successAlert"] = false;
+                    TempData["InSuccessMessage"] = "Não foi possível concluir a acção";
+                }
+                return RedirectToPage();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -68,7 +68,7 @@ namespace ISCED_Benguela.Data.Repository
             {
                 
              
-                var result= await context.Funcionarios.FirstOrDefaultAsync(x=>x.ID==update.ID);
+                var result= await context.Funcionarios.Include(x=>x.RedesSociais).Include(x=>x.Foto).FirstOrDefaultAsync(x=>x.ID==update.ID);
                 if (result!=null)
                 {
                     if (update.Foto is not null)

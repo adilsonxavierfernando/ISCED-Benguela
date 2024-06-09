@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISCED_Benguela.Migrations
 {
     [DbContext(typeof(IscedDbContext))]
-    [Migration("20240601193107_0001")]
-    partial class _0001
+    [Migration("20240609020230_001")]
+    partial class _001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,33 @@ namespace ISCED_Benguela.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Arquivos");
+                });
+
+            modelBuilder.Entity("ISCED_Benguela.Modelos.Banner", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Conteudo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ImagemID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Vantagens")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Visivel")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ImagemID");
+
+                    b.ToTable("Banner");
                 });
 
             modelBuilder.Entity("ISCED_Benguela.Modelos.Bilhete", b =>
@@ -200,7 +227,7 @@ namespace ISCED_Benguela.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DepartamentoID")
+                    b.Property<int>("CursoID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("NomeDisciplina")
@@ -209,7 +236,7 @@ namespace ISCED_Benguela.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("DepartamentoID");
+                    b.HasIndex("CursoID");
 
                     b.ToTable("Disicplina");
                 });
@@ -243,6 +270,12 @@ namespace ISCED_Benguela.Migrations
                     b.Property<bool>("Aprovado")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AvatarID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("Bloqueado")
                         .HasColumnType("INTEGER");
 
@@ -271,6 +304,8 @@ namespace ISCED_Benguela.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("AvatarID");
 
                     b.HasIndex("ContactosID");
 
@@ -464,6 +499,9 @@ namespace ISCED_Benguela.Migrations
                     b.Property<bool>("Aprovado")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Bibliografia")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -614,6 +652,17 @@ namespace ISCED_Benguela.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("ISCED_Benguela.Modelos.Banner", b =>
+                {
+                    b.HasOne("ISCED_Benguela.Modelos.Capa", "Imagem")
+                        .WithMany()
+                        .HasForeignKey("ImagemID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Imagem");
+                });
+
             modelBuilder.Entity("ISCED_Benguela.Modelos.Comentarios", b =>
                 {
                     b.HasOne("ISCED_Benguela.Modelos.Estudantes", "Estudante")
@@ -637,11 +686,13 @@ namespace ISCED_Benguela.Migrations
                 {
                     b.HasOne("ISCED_Benguela.Modelos.Arquivo", "ArquivoCurso")
                         .WithMany()
-                        .HasForeignKey("ArquivoCursoID");
+                        .HasForeignKey("ArquivoCursoID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ISCED_Benguela.Modelos.Capa", "CapaCurso")
                         .WithMany()
-                        .HasForeignKey("CapaCursoID");
+                        .HasForeignKey("CapaCursoID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ISCED_Benguela.Modelos.Departamentos", "Departamento")
                         .WithMany()
@@ -677,17 +728,23 @@ namespace ISCED_Benguela.Migrations
 
             modelBuilder.Entity("ISCED_Benguela.Modelos.Disciplina", b =>
                 {
-                    b.HasOne("ISCED_Benguela.Modelos.Departamentos", "Departamento")
+                    b.HasOne("ISCED_Benguela.Modelos.Cursos", "Curso")
                         .WithMany()
-                        .HasForeignKey("DepartamentoID")
+                        .HasForeignKey("CursoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Departamento");
+                    b.Navigation("Curso");
                 });
 
             modelBuilder.Entity("ISCED_Benguela.Modelos.Estudantes", b =>
                 {
+                    b.HasOne("ISCED_Benguela.Modelos.Capa", "Avatar")
+                        .WithMany()
+                        .HasForeignKey("AvatarID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ISCED_Benguela.Modelos.Contactos", "Contactos")
                         .WithMany()
                         .HasForeignKey("ContactosID")
@@ -705,6 +762,8 @@ namespace ISCED_Benguela.Migrations
                         .HasForeignKey("RegisterLoginID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Avatar");
 
                     b.Navigation("Contactos");
 
@@ -841,7 +900,8 @@ namespace ISCED_Benguela.Migrations
 
                     b.HasOne("ISCED_Benguela.Modelos.RedesSociais", "Redes")
                         .WithMany()
-                        .HasForeignKey("RedesID");
+                        .HasForeignKey("RedesID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ISCED_Benguela.Modelos.Registro", "RegisterLogin")
                         .WithMany()

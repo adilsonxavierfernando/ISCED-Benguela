@@ -5,8 +5,10 @@ using ISCED_Benguela.Data.Repository;
 using ISCED_Benguela.Encapsulamento;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var Configuration = builder.Configuration;
@@ -20,7 +22,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     );
 builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(typeof(AutomapperProfile));
-builder.Services.AddDbContext<IscedDbContext>(o=>o.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<IscedDbContext>(
+    o => { o.UseSqlite(Configuration.GetConnectionString("DefaultConnection")); o.AddInterceptors(new SqliteCommandInterceptor()); }
+ 
+    );
 builder.Services.AddScoped(typeof(EstudanteRepository));
 builder.Services.AddScoped(typeof(RegisterRepository));
 builder.Services.AddScoped(typeof(ProfessorRepository));

@@ -35,6 +35,31 @@ namespace ISCED_Benguela.Pages.Admin.Intervenientes
         }
 
         //deletar Professor
+        public async Task<IActionResult> OnGetDeleteAsync(int id)
+        {
+            try
+            {
+                var result = await this.repository.DeleteProfessorAsync(id);
+                if (result)
+                {
+                    TempData["successAlert"] = true;
+                    TempData["successMessage"] = "O professor foi Apagado com sucesso";
+                }
+                else
+                {
+                    TempData["successAlert"] = false;
+                    TempData["InSuccessMessage"] = "Não foi possível Apagar o Professor";
+                }
+                return RedirectToPage();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        //aprovar
         public async Task<IActionResult> OnGetAprovarAsync(int id)
         {
             try
