@@ -4,6 +4,7 @@
 @model ISCED_Benguela.Pages.Admin.InfoSite.IndexModel
 @{
     Layout = "_Layout-admin";
+    ViewData["Title"]="Informações do Site";
 }
 
 <div class="container">
@@ -65,30 +66,56 @@
 
                         <div class="row">
                             <div class="input-field col s12">
-                                <input asp-for="ModeloDTO.Geomap"  id="titulo" type="text" class="validate" required disabled>
+                                <input asp-for="ModeloDTO.Geomap"  id="titulo" type="text" class="validate" required>
                                 <label for="titulo">Mapa</label>
                             </div>
                             <div class="input-field col s12">
-                                <input asp-for="ModeloDTO.Contacto.Email" id="titulo"  type="email" class="validate" required disabled>
+                                <input asp-for="ModeloDTO.Contacto.Email" id="titulo"  type="email" class="validate" required>
                                 <label for="titulo">Email</label>
                             </div>
                             <div class="input-field col s12">
-                                <input asp-for="ModeloDTO.Contacto.Telefone"  id="titulo" type="tel" class="validate" required disabled>
+                                <input asp-for="ModeloDTO.Contacto.Telefone"  id="titulo" type="tel" class="validate" required>
                                 <label for="titulo">Telefone</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col-6 s12">
-                                <input asp-for="ModeloDTO.Endereco.Cidade"  id="titulo" type="text" class="validate" required disabled>
+                                <input asp-for="ModeloDTO.Endereco.Cidade"  id="titulo" type="text" class="validate" required >
                                 <label for="titulo">Cidade</label>
                             </div>
                             <div class="input-field col-6 s12">
-                                <input asp-for="ModeloDTO.Endereco.Bairro" id="titulo"  type="text" class="validate" required disabled>
+                                <input asp-for="ModeloDTO.Endereco.Bairro" id="titulo"  type="text" class="validate" required >
                                 <label for="titulo">bairro</label>
                             </div>
                             <div class="input-field col-12 s12">
-                                <input asp-for="ModeloDTO.Endereco.Localizacao" id="titulo"  type="text" class="validate" required disabled>
+                                <input asp-for="ModeloDTO.Endereco.Localizacao" id="titulo"  type="text" class="validate" required >
                                 <label for="titulo">Localização</label>
+                            </div>
+                        </div>
+
+                        <!--Redes Sociais-->
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">facebook</i>
+                                <input asp-for="ModeloDTO.Redes.Facebook" id="icon_prefix" type="url" class="validate">
+                                <label for="icon_prefix">Facebook</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">instagram</i>
+                                <input asp-for="ModeloDTO.Redes.Instagram"  type="url" class="validate">
+                                <label for="icon_telephone">Instagram</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">linkedin</i>
+                                <input asp-for="ModeloDTO.Redes.Linkedin"  id="icon_prefix" type="url" class="validate">
+                                <label for="icon_prefix">Linkedin</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">linkedin</i>
+                                <input asp-for="ModeloDTO.Redes.Youtube"  id="icon_telephone" type="url" class="validate">
+                                <label for="icon_telephone">Youtube</label>
                             </div>
                         </div>
 
@@ -108,14 +135,14 @@
     @{
         if (TempData["successAlert"] is not null)
         {
-            if ((bool)TempData["successAlert"])
+            if ((bool)TempData["successAlert"]!)
             {
-                @Html.Raw(Html.SweetAlert("Os dados do Site foram modificados com sucesso", "Portal de Administração", alertType.success))
+                @Html.Raw(Html.SweetAlert(TempData["successMessage"]?.ToString()!, "Portal do Administrador", alertType.success))
                 ;
             }
             else
             {
-                @Html.Raw(Html.SweetAlert("Não foi possivel alterar as informaçãoi do site", "Portal de Administração", alertType.error))
+                @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"]?.ToString()!, "Portal do Administrador", alertType.error))
                 ;
             }
 

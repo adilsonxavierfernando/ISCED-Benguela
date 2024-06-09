@@ -3,6 +3,7 @@
 @using ISCED_Benguela.Modelos.Enums
 @model ISCED_Benguela.Pages.Register.TeacherRegisterModel
 @{
+    ViewData["Title"] = "Criar conta de Professor";
 }
 <!-- Section: Design Block -->
 <section class="text-center">
@@ -29,25 +30,25 @@
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <div  class="form-floating">
-                                    <input required asp-for="ModeloProfessor.Nome" type="text" id="nome" class="form-control" placeholder="Nome"/>
+                                    <input minlength="5" required asp-for="ModeloProfessor.Nome" type="text" id="nome" class="form-control" placeholder="Nome" />
                                     <label  for="nome">Nome</label>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div  class="form-floating">
-                                    <input asp-for="ModeloProfessor.Sobrenome" required="O campo sobrenome é de preenchimento obrigatorio" type="text" id="sobrenome" class="form-control" placeholder="Sobrenome" />
+                                    <input minlength="5" asp-for="ModeloProfessor.Sobrenome" required="O campo sobrenome é de preenchimento obrigatorio" type="text" id="sobrenome" class="form-control" placeholder="Sobrenome" />
                                     <label  for="sobrenome">Sobrenome</label>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div  class="form-floating">
-                                    <input asp-for="ModeloProfessor.Nacionalidade" type="text" id="nacionalidade" class="form-control" placeholder="Nacionalidade" />
+                                    <input minlength="4" asp-for="ModeloProfessor.Nacionalidade" type="text" id="nacionalidade" class="form-control" placeholder="Nacionalidade" />
                                     <label  for="nacionalidade">Nacionalidade</label>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div  class="form-floating">
-                                    <input asp-for="ModeloProfessor.Morada.Cidade" type="text" id="morada" class="form-control" placeholder="Morada" />
+                                    <input minlength="4" asp-for="ModeloProfessor.Morada.Cidade" type="text" id="morada" class="form-control" placeholder="Morada" />
                                     <label  for="morada">Morada</label>
                                 </div>
                             </div>
@@ -151,7 +152,7 @@
         }
         else
         {
-            @Html.Raw(Html.SweetAlert("Sua Inscrição Não foi feita, por favor, verifique seus dados", "Cadastro de Professor", alertType.error))
+            @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"].ToString(), "Cadastro de Professor", alertType.error))
             ;
         }
 

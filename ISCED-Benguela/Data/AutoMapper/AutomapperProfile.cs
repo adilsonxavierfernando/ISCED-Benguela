@@ -28,6 +28,7 @@ namespace ISCED_Benguela.Data.AutoMapper
             CreateMap<FeedbackDTO, Feedbacks>();
             CreateMap<FormacaoDTO, Formacao>();
             CreateMap<RespostaDTO, Reposta>();
+            CreateMap<InfoSiteDTO, InfoSite>();
 
 
         }

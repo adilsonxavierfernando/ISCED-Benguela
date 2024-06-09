@@ -38,7 +38,16 @@ namespace ISCED_Benguela.Pages.Materias
             DepartamentoList = await departamento.GetDepartamentosAsync();
             CursoList = await curso.GetCursosAsync();
             EstudanteList = await estudante.GetEstudantesAsync();
-            MateriaList = (await materia.GetMateriaByDepartamentoAsync(id)).Where(x=>x.Visivel).ToList();
+            if (id > 0)
+            {
+                MateriaList = (await materia.GetMateriaAsync()).Where(x => x.Visivel).ToList();
+
+            }
+            else
+            {
+                MateriaList = (await materia.GetMateriaByDepartamentoAsync(id)).Where(x => x.Visivel).ToList();
+            }
+          
 
             foreach (var item in ProfessoresList)
             {

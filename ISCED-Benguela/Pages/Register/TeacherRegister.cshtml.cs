@@ -1,6 +1,7 @@
 using ISCED_Benguela.Data.Repository;
 using ISCED_Benguela.Modelos;
 using ISCED_Benguela.Modelos.DTO;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -86,6 +87,12 @@ namespace ISCED_Benguela.Pages.Register
                     return Page();
                 }
               
+            }
+            catch (SmtpCommandException ex)
+            {
+                TempData["successAlert"] = false;
+                TempData["InSuccessMessage"] = ex.Message;
+                return Page();
             }
             catch (Exception)
             {

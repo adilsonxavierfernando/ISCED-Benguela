@@ -2,6 +2,7 @@ using ISCED_Benguela.Data.Context;
 using ISCED_Benguela.Data.Repository;
 using ISCED_Benguela.Modelos;
 using ISCED_Benguela.Modelos.DTO;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -65,17 +66,23 @@ namespace ISCED_Benguela.Pages.Register
                         TempData["successAlert"] = true;
                         return RedirectToPage();
                     }
-                    Console.WriteLine($"{TermoAccept}:cadastro feito com sucesso");
+                    TempData["InSuccessMessage"] = "Verifique seus dados, porque não conseguimos criar sua conta";
                     return Page();
                 }
                 else
                 {
                     TempData["successAlert"] = false;
-                    Console.WriteLine($"{TermoAccept}:Os termos não foram aceites");
+                    TempData["InSuccessMessage"] = "Não podemos criar sua conta quando não concordo com nossos termos";
                     return Page();
                 }
               
                
+            }
+            catch (SmtpCommandException ex)
+            {
+                TempData["successAlert"] = false;
+                TempData["InSuccessMessage"] = ex.Message;
+                return Page();
             }
             catch (Exception ex)
             {

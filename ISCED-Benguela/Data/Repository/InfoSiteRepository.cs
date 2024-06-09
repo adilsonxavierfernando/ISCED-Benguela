@@ -33,6 +33,23 @@ namespace ISCED_Benguela.Data.Repository
             }
         }
 
+        //post info
+        public async Task<InfoSite> PostInfoAsync(InfoSiteDTO dto)
+        {
+            try
+            {
+                var modelo = mapper.Map<InfoSite>(dto);
+                await context.InfoSites.AddAsync(modelo);
+                await context.SaveChangesAsync();
+                return modelo;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<InfoSite> EditeInfoSiteAsync(InfoSite dto)
         {
             try

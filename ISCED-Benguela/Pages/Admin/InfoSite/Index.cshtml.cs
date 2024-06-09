@@ -31,5 +31,28 @@ namespace ISCED_Benguela.Pages.Admin.InfoSite
                 throw;
             }
         }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                var result = await repository.PostInfoAsync(ModeloDTO);
+                if(result is not null)
+                {
+                    ModeloView = result;
+                    TempData["successAlert"] = true;
+                    TempData["successMessage"] = "Os dados do site foram inseridos com sucesso.";
+                    return RedirectToPage();
+                }
+                TempData["successAlert"] = false;
+                TempData["successMessage"] = "Não foi possivel proceder.";
+                return Page();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

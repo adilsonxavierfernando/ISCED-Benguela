@@ -8,6 +8,7 @@ using System.Security.Claims;
 using ISCED_Benguela.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using ISCED_Benguela.Encapsulamento;
 
 namespace ISCED_Benguela.Pages.Register
 {
@@ -41,6 +42,28 @@ namespace ISCED_Benguela.Pages.Register
         string pagina;
         string NomeLogado { get; set; }
         string IdUserLogado { get; set; }
+
+        public async Task<IActionResult> OnPostRecoveryAsync()
+        {
+            var result = await context.Login(this.Usuario, this.Password);
+            if (result != null)
+            {
+                var mail = new SendMailService();
+                string body = $"<h1>Olá,{result.Usuario} </h1>" +
+                    $"<p>Suas credenciais para acessar o portal estão a baixo: </p>" +
+                    $"<b>Senha:</b> {result.Password}<br>" +
+                    $"<b>Username:</b>{result.Usuario}<hr><center><b>Portal Isced-benguela</b> - pela formação superior de  melhores educadores. </center>";
+                await mail.SendEmail(result.Usuario, "Recuperação de Credenciais", body, true);
+                TempData["SuccessMessage"] = true;
+                TempData["SuccessMessageContent"] = "Sua senha foi recuperada com sucesso, consulte seu E-mail para ver a mesma e voltar a Iniciar Sessão no portal.";
+            }
+            else
+            {
+                TempData["SuccessMessage"] = false;
+                TempData["SuccessMessageContent"] = "Nenhuma conta está associada ao E-mail informado";
+            }
+            return RedirectToPage();
+        }
         public async Task<IActionResult>  OnPost() 
         {
             try

@@ -1,6 +1,14 @@
 ﻿@page
 @model ISCED_Benguela.Pages.Cursos.IndexModel
 @{
+    if (string.IsNullOrEmpty(Model.DepartamentoActual))
+    {
+        ViewData["Title"]= Model.modelFormacao.NomeFormacao;
+    }
+    else
+    {
+        ViewData["Title"]= @Model.DepartamentoActual;
+    }
 }
 <main id="main" data-aos="fade-in">
 
@@ -10,9 +18,11 @@
             @if(string.IsNullOrEmpty(Model.DepartamentoActual))
             {
             <h2>@Model.modelFormacao.NomeFormacao</h2>
+             
             <p>Nossos cursos de @Model.modelFormacao.NomeFormacao! Com melhores planos curriculares. </p>
             }else{
             <h2>@Model.DepartamentoActual</h2>
+          
             <p>O  @Model.DepartamentoActual é constituído pelos seguintes cursos. </p>
             }
          

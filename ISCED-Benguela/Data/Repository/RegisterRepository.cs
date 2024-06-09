@@ -43,6 +43,27 @@ namespace ISCED_Benguela.Data.Repository
             }
         }
 
+        public async Task<Modelos.Registro> Recuperar(string username)
+        {
+            try
+            {
+                var result = await context.Register.FirstOrDefaultAsync(x => x.Usuario == username);
+                if (result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<Professores>GetProfessorAsync(int id)
         {
             try

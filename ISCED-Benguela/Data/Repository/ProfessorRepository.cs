@@ -3,6 +3,8 @@ using ISCED_Benguela.Data.Context;
 using ISCED_Benguela.Modelos.DTO;
 using ISCED_Benguela.Modelos;
 using Microsoft.EntityFrameworkCore;
+using ISCED_Benguela.Encapsulamento;
+using MailKit.Net.Smtp;
 
 namespace ISCED_Benguela.Data.Repository
 {
@@ -21,6 +23,29 @@ namespace ISCED_Benguela.Data.Repository
 
             try
             {
+                try
+                {
+                    var mail = new SendMailService();
+                    string body = $"<h1>Olá caríssimo estudante,{prof.Nome} </h1>" +
+                        $"<p>Sua Inscrição ao portal do Isced, foi <b>Enviada</p> pelo, que aguarda a aprovação administradores</p>" +
+                        $"<hr><center><b>Portal Isced-benguela</b> - Pela formação superior de  melhores educadores. </center>";
+                    await mail.SendEmail(prof.RegisterLogin.Usuario, "Inscrição no portal do Isced", body, true);
+                }
+                catch (SmtpCommandException ex)
+                {
+                    if (ex.ErrorCode == SmtpErrorCode.RecipientNotAccepted)
+                    {
+                        throw new SmtpCommandException(ex.ErrorCode, ex.StatusCode, "O E-mail fornecido não existe, informe um e-mail válido por favor");
+                    }
+                    else if (ex.ErrorCode == SmtpErrorCode.SenderNotAccepted)
+                    {
+                        throw new SmtpCommandException(ex.ErrorCode, ex.StatusCode, "O E-mail fornecido não existe, informe um e-mail válido por favor");
+                    }
+                    else if (ex.ErrorCode == SmtpErrorCode.MessageNotAccepted)
+                    {
+                        throw new SmtpCommandException(ex.ErrorCode, ex.StatusCode, "O E-mail fornecido não existe, informe um e-mail válido por favor");
+                    }
+                }
                 prof.Foto.Ficheiro = await Conversores.Conversores_for_bytesAsync(prof.Foto.Caminho);
                 prof.Foto.Extensao = "PNG";
                 var modelo = mapper.Map<Professores>(prof);
@@ -156,7 +181,7 @@ namespace ISCED_Benguela.Data.Repository
                     .FirstOrDefaultAsync(x => x.ID == id);
                 if (result != null)
                 {
-                    result.Bloqueado = true;
+                    result.Bloqueado = !result.Bloqueado;
                     await context.SaveChangesAsync();
                     return true;
                 }
@@ -292,6 +317,13 @@ namespace ISCED_Benguela.Data.Repository
                     .FirstOrDefaultAsync(x => x.ID == id);
                 if (result != null)
                 {
+                    var mail = new SendMailService();
+                    string body = $"<h1>Olá caríssimo Professor,{result.Nome} </h1>" +
+                        $"<p>Sua Inscrição ao portal do Isced, foi <b>Aprovada</p> pelos administradores</p>" +
+                        $"<br>Agora você pode publicar suas matérias, e ter uma interação directa com seus estudantes.<br><br>Use o portal com responsabilidade" +
+                        $"" +
+                        $"<hr><center><b>Portal Isced-benguela</b> - Pela formação superior de  melhores educadores. </center>";
+                    await mail.SendEmail(result.RegisterLogin.Usuario, "Inscrição no portal do Isced", body, true);
                     result.Aprovado = true;
                     await context.SaveChangesAsync();
                     return true;

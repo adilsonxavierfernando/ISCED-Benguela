@@ -4,6 +4,7 @@
 
 @model ISCED_Benguela.Pages.Register.StudentRegisterModel
 @{
+    ViewData["Title"] = "Criar conta de estudante";
 }
 
  <!-- Section: Design Block -->
@@ -62,12 +63,12 @@
                                     <form method="post" class="pt-3" enctype="multipart/form-data">
                                  <div class="row">
                                             <div class="col-md-6 form-floating">
-                                                <input asp-for="estudante.Nome" type="text" required class="form-control" id="nome" placeholder="Nome completo do Estudante">
+                                                <input minlength="5" asp-for="estudante.Nome" type="text" required class="form-control" id="nome" placeholder="Nome completo do Estudante">
                                                 <label for="nome">Nome</label>
                                                 <span asp-validation-for="estudante.Nome"></span>
                                             </div>
                                             <div class="col-md-6 form-floating">
-                                                <input asp-for="estudante.Sobrenome" required type="text" class="form-control" id="nome" placeholder="Sobrenome">
+                                                <input minlength="5" asp-for="estudante.Sobrenome" required type="text" class="form-control" id="nome" placeholder="Sobrenome">
                                                 <label for="nome">Sobrenome</label>
                                             </div>
                                  </div>
@@ -75,7 +76,7 @@
                                             <div class="row">
                                          
                                             <div class="col-md-6 form-floating">
-                                                <input asp-for="estudante.Bilhete.Numero" required type="text" class="form-control" id="bilhete" placeholder="Nº Bilhete de Identidade">
+                                                <input minlength="14" asp-for="estudante.Bilhete.Numero" required type="text" class="form-control" id="bilhete" placeholder="Nº Bilhete de Identidade">
                                                 <label for="bilhete">Bilhete de Identidade</label>
                                             </div>
                                             <div class="col-md-6 form-floating">
@@ -168,7 +169,7 @@
             }
             else
             {
-                @Html.Raw(Html.SweetAlert("Sua Inscrição Não foi feita, por favor, verifique seus dados", "Cadastro de Aluno", alertType.error))
+                @Html.Raw(Html.SweetAlert(TempData["InSuccessMessage"].ToString(), "Cadastro de Aluno", alertType.error))
                 ;
             }
 

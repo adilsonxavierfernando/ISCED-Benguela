@@ -42,7 +42,7 @@
                             <input type="hidden" value="false" asp-for="Rember">
                             <label for="remember" class="form-check-label">Lembre-me sempre</label>
                         </div>
-                        <div><a href="#">Esqueceu a senha?</a></div>
+                        <div><a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop_recovery">Esqueceu a senha?</a></div>
                     </div>
 
 
@@ -101,6 +101,34 @@
                         <a class="btn btn-primary" asp-page="/Register/StudentRegister"><i class="bi bi-arrow-right-square"></i>   Inscrever Como Aluno</a>
                         <a class="btn btn-primary" asp-page="/Register/TeacherRegister"><i class="bi bi-arrow-right-square"></i>   Inscrever Como Professor</a>
                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal For recovery Password-->
+
+    <div class="modal fade" id="staticBackdrop_recovery" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Recuperar Senha</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" asp-page-handler="Recovery">
+                    <div class="d-grid gap-4">
+                        <h2><b>Insira o E-mail associado a sua conta para Recuperar</b></h2>
+                        <div class="form-floating">
+                            <input type="email" asp-for="Usuario" required class="form-control" id="email" placeholder="info@isced-benguela.ao">
+                            <label for="email">Correio Electrônico</label>
+                        </div>
+                        <button class="btn btn-primary"><i class="bi bi-arrow-right-square"></i>  Enviar Para Recuperar</button>
+                    </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
