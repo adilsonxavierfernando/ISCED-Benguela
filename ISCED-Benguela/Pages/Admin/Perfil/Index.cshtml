@@ -186,77 +186,84 @@
            
        }
         <div class="row">
+           
             <div class="col s12 m4">
                 <span class="settings-title">Dados de Registro</span>
                 <p>Informações de acesso ao portal. </p>
             </div>
             <div class="col s12 m8">
+                    @if (!User.IsInRole("Professor"))
+                {
+                    <div class="settings-group">
 
-                <div class="settings-group">
-                 
-        
-                           <form method="post" asp-page-handler="UsuarioUpdate">
+
+                        <form method="post" asp-page-handler="UsuarioUpdate">
                             @if (@Model.userModel is not null)
                             {
-                            <ul class="collapsible setting">
-                                <li>
-                                    <input type="hidden" value="@Model.userModel.ID" asp-for="userModel.ID" />
-                                    <div class="collapsible-header" tabindex="0">
-                                        <span>Dados de Registro</span>
-                                        <i class="material-icons caret right">keyboard_arrow_right</i>
-                                    </div>
-                                    <div class="collapsible-body">
-                                        <div class="input-field">
-                                            <input id="username" value="@Model.userModel.Nome" type="text" class="validate" asp-for="userModel.Nome">
-                                            <label for="username">Nome</label>
+                                <ul class="collapsible setting">
+                                    <li>
+                                        <input type="hidden" value="@Model.userModel.ID" asp-for="userModel.ID" />
+                                        <div class="collapsible-header" tabindex="0">
+                                            <span>Dados de Registro</span>
+                                            <i class="material-icons caret right">keyboard_arrow_right</i>
                                         </div>
-                                        <div class="input-field">
-                                            <input id="username" value="@Model.userModel.Sobrenome" type="text" class="validate" asp-for="userModel.Sobrenome">
-                                            <label for="username">Sobrenome</label>
+                                        <div class="collapsible-body">
+                                            <div class="input-field">
+                                                <input id="username" value="@Model.userModel.Nome" type="text" class="validate" asp-for="userModel.Nome">
+                                                <label for="username">Nome</label>
+                                            </div>
+                                            <div class="input-field">
+                                                <input id="username" value="@Model.userModel.Sobrenome" type="text" class="validate" asp-for="userModel.Sobrenome">
+                                                <label for="username">Sobrenome</label>
+                                            </div>
+                                            <div class="input-field">
+                                                <input id="username" value="@Model.userModel.RegisterLogin.Usuario" type="text" class="validate" asp-for="userModel.RegisterLogin.Usuario">
+                                                <label for="username">Username</label>
+                                            </div>
                                         </div>
-                                        <div class="input-field">
-                                            <input id="username" value="@Model.userModel.RegisterLogin.Usuario" type="text" class="validate" asp-for="userModel.RegisterLogin.Usuario">
-                                            <label for="username">Username</label>
+                                    </li>
+                                    <li>
+                                        <div class="collapsible-header" tabindex="0">
+                                            <span>Password</span>
+                                            <i class="material-icons caret right">keyboard_arrow_right</i>
                                         </div>
-                                    </div>
-                                </li>
-                            <li>
-                                <div class="collapsible-header" tabindex="0">
-                                    <span>Password</span>
-                                    <i class="material-icons caret right">keyboard_arrow_right</i>
-                                </div>
-                                <div class="collapsible-body">
-                                    <div class="input-field">
-                                            <input id="password" asp-for="userModel.RegisterLogin.Password" value="@Model.userModel.RegisterLogin.Password" type="text" class="validate" />
-                                            <label for="password">Password</label>
-                                            <input type="hidden" value="@Model.userModel.RegisterLogin.ID" asp-for="userModel.RegisterLogin.ID" />
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="collapsible-header" tabindex="0">
-                                    <span>Opção</span>
-                                    <i class="material-icons caret right">keyboard_arrow_right</i>
-                                </div>
-                                <div class="collapsible-body">
+                                        <div class="collapsible-body">
+                                            <div class="input-field">
+                                                <input id="password" asp-for="userModel.RegisterLogin.Password" value="@Model.userModel.RegisterLogin.Password" type="text" class="validate" />
+                                                <label for="password">Password</label>
+                                                <input type="hidden" value="@Model.userModel.RegisterLogin.ID" asp-for="userModel.RegisterLogin.ID" />
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="collapsible-header" tabindex="0">
+                                            <span>Opção</span>
+                                            <i class="material-icons caret right">keyboard_arrow_right</i>
+                                        </div>
+                                        <div class="collapsible-body">
 
-                                    <p>
-                                        <button class="btn">Actualizar Registro</button>
-                                    </p>
+                                            <p>
+                                                <button class="btn">Actualizar Registro</button>
+                                            </p>
 
 
-                                </div>
-                            </li>
-                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
                             }
-                             </form>
+                        </form>
 
-                             <!-- register -->
-                        @if (User.IsInRole("Professor"))
-                        {
-                       
+                        <!-- register -->
+                    </div>
+                }
+               
 
-                            <form method="post" asp-page-handler="SenhaUpdate">
+                <div class="settings-group">
+                    @if (User.IsInRole("Professor"))
+                    {
+
+
+                        <form method="post" asp-page-handler="SenhaUpdate">
                             <ul class="collapsible setting">
                                 <li>
                                     <div class="collapsible-header" tabindex="0">
@@ -267,7 +274,7 @@
                                         <div class="input-field">
                                             <input id="password" value="@dados.RegisterLogin.Password" type="text" class="validate" asp-for="registerModel.Password" />
                                             <label for="password">Password</label>
-                                            <input type="hidden" value="@dados.RegisterLogin.ID" asp-for="registerModel.ID"/>
+                                            <input type="hidden" value="@dados.RegisterLogin.ID" asp-for="registerModel.ID" />
                                         </div>
                                     </div>
                                 </li>
@@ -286,13 +293,9 @@
                                     </div>
                                 </li>
                             </ul>
-                            </form>
-                                    
-                        }
+                        </form>
 
-           
-          
-                   
+                    }
                 </div>
 
             </div>

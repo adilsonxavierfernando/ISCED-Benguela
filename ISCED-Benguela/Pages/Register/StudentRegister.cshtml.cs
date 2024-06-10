@@ -23,19 +23,14 @@ namespace ISCED_Benguela.Pages.Register
        
         private readonly EstudanteRepository repository;
         private readonly CursosRepository cursosRepository;
+        private readonly UsuarioRepository usuarioRepository;
 
-        public StudentRegisterModel(EstudanteRepository repository, CursosRepository cursosRepository)
+        public StudentRegisterModel(EstudanteRepository repository, CursosRepository cursosRepository, UsuarioRepository usuarioRepository)
         {
          
             this.repository = repository;
             this.cursosRepository = cursosRepository;
-            //lsCursos = new SelectList(new Collection<Modelos.Cursos>()
-            //{
-            //    new Modelos.Cursos() { Formacao=new Modelos.Formacao{ID=1, NomeFormacao="Licenciatura"}, NomeCurso="Matemátiva"},
-            //    new Modelos.Cursos() { Formacao=new Modelos.Formacao{ID=1, NomeFormacao="Licenciatura"}, NomeCurso="Língua Portuguesa"},
-            //    new Modelos.Cursos() { Formacao=new Modelos.Formacao{ID=1, NomeFormacao="Licenciatura"}, NomeCurso="Letras"},
-            //    new Modelos.Cursos() { Formacao=new Modelos.Formacao{ID=1, NomeFormacao="Licenciatura"}, NomeCurso="Inglês"},
-            //},"ID","NomeCurso");
+            this.usuarioRepository = usuarioRepository;
         }
         public async Task<IActionResult> OnGetAsync()
         {
@@ -58,22 +53,30 @@ namespace ISCED_Benguela.Pages.Register
                 {
                     estudante.RegisterLogin.Role = Modelos.Enums.EnumRole.Aluno;
                     estudante.RegisterLogin.Usuario = estudante.Contactos.Email;
-                    
-                    
-                    var post=await repository.PostEstudantesAsync(estudante);
-                    if(post != null)
+
+                    if (!await usuarioRepository.VerifyEmailExistAsync(estudante.RegisterLogin.Usuario))
                     {
-                        TempData["successAlert"] = true;
-                        return RedirectToPage();
+                        var post = await repository.PostEstudantesAsync(estudante);
+                        if (post != null)
+                        {
+                            TempData["successAlert"] = true;
+                            return RedirectToPage();
+                        }
+                        TempData["InSuccessMessage"] = "Verifique seus dados, porque não conseguimos criar sua conta";
+                        return await OnGetAsync();
                     }
-                    TempData["InSuccessMessage"] = "Verifique seus dados, porque não conseguimos criar sua conta";
-                    return Page();
+                    else
+                    {
+                        TempData["successAlert"] = false;
+                        TempData["InSuccessMessage"] = "O e-mail que está tentando usar, já está sendo usado por outro utilizador";
+                        return await OnGetAsync();
+                    }
                 }
                 else
                 {
                     TempData["successAlert"] = false;
-                    TempData["InSuccessMessage"] = "Não podemos criar sua conta quando não concordo com nossos termos";
-                    return Page();
+                    TempData["InSuccessMessage"] = "Não podemos criar sua conta quando não concorda com nossos termos";
+                    return await OnGetAsync();
                 }
               
                
@@ -82,7 +85,7 @@ namespace ISCED_Benguela.Pages.Register
             {
                 TempData["successAlert"] = false;
                 TempData["InSuccessMessage"] = ex.Message;
-                return Page();
+                return await OnGetAsync();
             }
             catch (Exception ex)
             {

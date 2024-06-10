@@ -76,6 +76,30 @@ namespace ISCED_Benguela.Data.Repository
             }
         }
 
+        public async Task<bool> VerifyEmailExistAsync(string email)
+        {
+
+            try
+            {
+                var result = await context.Usuarios
+                    .Include(x => x.RegisterLogin)
+                    .FirstOrDefaultAsync(x => x.RegisterLogin.Usuario == email);
+                if (result != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<Usuario> GetUsuarioAsync(int idUsuario)
         {
 

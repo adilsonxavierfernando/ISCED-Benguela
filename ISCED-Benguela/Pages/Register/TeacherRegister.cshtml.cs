@@ -23,27 +23,13 @@ namespace ISCED_Benguela.Pages.Register
         
         private readonly ProfessorRepository repository;
         private readonly DepartamentosRepository dep;
+        private readonly UsuarioRepository usuarioRepository;
 
-        public TeacherRegisterModel(ProfessorRepository _repository, DepartamentosRepository dep)
+        public TeacherRegisterModel(ProfessorRepository _repository, DepartamentosRepository dep, UsuarioRepository usuarioRepository)
         {
-           //disciplinas = new List<Disciplina>()
-           // {
-           //   new Disciplina{ID=1, Departamento=new Modelos.Departamentos{ID=1}, NomeDisciplina="Matematica"},
-           //   new Disciplina{ID=2, Departamento=new Modelos.Departamentos{ID=1}, NomeDisciplina="Fisica"},
-           //   new Disciplina{ID=3, Departamento=new Modelos.Departamentos{ID=2}, NomeDisciplina="Portugues"},
-           //   new Disciplina{ID=4, Departamento=new Modelos.Departamentos{ID=2}, NomeDisciplina="Literatura"},
-           //   new Disciplina{ID=5, Departamento=new Modelos.Departamentos{ID=3}, NomeDisciplina="Geografia"},
-           // };
-
-           // departamentos = new List<Departamentos>()
-           // {
-           //   new Modelos.Departamentos{ID=1, NomeDepartamento="Ciencias Exactas"},
-           //   new Modelos.Departamentos{ID=2, NomeDepartamento="Ciencias Geograficas"},
-           //   new Modelos.Departamentos{ID=3, NomeDepartamento="Comunicação e Linguistica"},
-
-           // };
             repository = _repository;
             this.dep = dep;
+            this.usuarioRepository = usuarioRepository;
         }
         public async Task<IActionResult> OnGetAsync()
         {
@@ -68,23 +54,34 @@ namespace ISCED_Benguela.Pages.Register
                     ModeloProfessor.RegisterLogin.Role = Modelos.Enums.EnumRole.Professor;
                     ModeloProfessor.RegisterLogin.Usuario = ModeloProfessor.Contacto.Email;
 
-
-                    var post = await repository.PostProfessorAsync(ModeloProfessor);
-                    if (post != null)
+                    if (!await usuarioRepository.VerifyEmailExistAsync(ModeloProfessor.RegisterLogin.Usuario))
                     {
-                        TempData["successAlert"] = true;
-                        return RedirectToPage();
+                        var post = await repository.PostProfessorAsync(ModeloProfessor);
+                        if (post != null)
+                        {
+                            TempData["successAlert"] = true;
+                            return RedirectToPage();
+                        }
+                        else
+                        {
+                            TempData["successAlert"] = false;
+                            TempData["InSuccessMessage"] = "Não conseguimos Criar sua Conta. Verifique seus dados";
+                            return await OnGetAsync();
+                        }
                     }
                     else
                     {
                         TempData["successAlert"] = false;
-
-                        return Page();
+                        TempData["InSuccessMessage"] = "O e-mail que está tentando usar, já está sendo usado por outro utilizador";
+                        return await OnGetAsync();
                     }
+                    
                 }
                 else
                 {
-                    return Page();
+                    TempData["successAlert"] = false;
+                    TempData["InSuccessMessage"] = "Não podemos criar sua conta quando não concorda com nossos termos";
+                    return await OnGetAsync();
                 }
               
             }
@@ -92,7 +89,7 @@ namespace ISCED_Benguela.Pages.Register
             {
                 TempData["successAlert"] = false;
                 TempData["InSuccessMessage"] = ex.Message;
-                return Page();
+                return await OnGetAsync();
             }
             catch (Exception)
             {

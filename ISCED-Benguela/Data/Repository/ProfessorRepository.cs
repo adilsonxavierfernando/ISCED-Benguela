@@ -26,8 +26,8 @@ namespace ISCED_Benguela.Data.Repository
                 try
                 {
                     var mail = new SendMailService();
-                    string body = $"<h1>Olá caríssimo estudante,{prof.Nome} </h1>" +
-                        $"<p>Sua Inscrição ao portal do Isced, foi <b>Enviada</p> pelo, que aguarda a aprovação administradores</p>" +
+                    string body = $"<h1>Olá caríssimo {prof.Nome} </h1>" +
+                        $"<p>Sua Inscrição ao portal do Isced, foi <b>Enviada</p> pelo, que aguarda a aprovação dos administradores</p>" +
                         $"<hr><center><b>Portal Isced-benguela</b> - Pela formação superior de  melhores educadores. </center>";
                     await mail.SendEmail(prof.RegisterLogin.Usuario, "Inscrição no portal do Isced", body, true);
                 }
@@ -314,6 +314,7 @@ namespace ISCED_Benguela.Data.Repository
             try
             {
                 var result = await context.Professores
+                    .Include(x=>x.RegisterLogin)
                     .FirstOrDefaultAsync(x => x.ID == id);
                 if (result != null)
                 {
