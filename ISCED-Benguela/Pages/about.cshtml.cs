@@ -19,7 +19,7 @@ namespace ISCED_Benguela.Pages
         {
             try
             {
-                LstMember = await repository.GetMembershipAsync();
+                LstMember = (await repository.GetMembershipAsync()).OrderBy(x => x.Cargo.ToLower().Contains("Presidente".ToLower())?0:1).ThenBy(x => x.NomeFuncionario).ToList();
                 foreach (var item in LstMember)
                 {
                     item.Foto.Extensao = FileConversor.ByteToString(item.Foto.Ficheiro);

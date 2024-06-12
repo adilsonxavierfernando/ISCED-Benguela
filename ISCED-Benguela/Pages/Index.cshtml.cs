@@ -3,6 +3,7 @@ using ISCED_Benguela.Encapsulamento;
 using ISCED_Benguela.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace ISCED_Benguela.Pages;
@@ -41,6 +42,37 @@ public class IndexModel : PageModel
         EstudanteList = await estudante.GetEstudantesAsync();
         MateriaList = (await materia.GetMateriaAsync()).Where(x=>x.Visivel).ToList();
         FormacaoList = await curso.GetFormacaoAsync();
+
+        int idUser = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var e = await estudante.GetEstudantesByAsync(idUser);
+        if (e is not null)
+        {
+            MateriaList = (await materia.GetMateriaAsync()).Where(x => x.Visivel && x.DepartamentosID == e.Curso.DepartamentoID).ToList();
+            foreach (var item in DepartamentoList)
+            {
+                item.isPrincipal = false;
+                if (item.ID == e.Curso.DepartamentoID)
+                    item.isPrincipal = true;
+            }
+
+            ProfessoresList = ProfessoresList.Where(x => x.DepartamentosID == e.Curso.DepartamentoID).ToList();
+        }
+        else
+        {
+            var p = await professor.GetProfessorByIdAsync(idUser);
+            if (p is not null)
+            {
+                MateriaList = (await materia.GetMateriaAsync()).Where(x => x.Visivel && x.DepartamentosID == p.DepartamentosID).ToList();
+                foreach (var item in DepartamentoList)
+                {
+                    item.isPrincipal = false;
+                    if (item.ID == p.DepartamentosID)
+                        item.isPrincipal = true;
+                }
+                ProfessoresList = ProfessoresList.Where(x => x.DepartamentosID == p.DepartamentosID).ToList();
+            }
+
+        }
 
         foreach (var item in ProfessoresList)
         {

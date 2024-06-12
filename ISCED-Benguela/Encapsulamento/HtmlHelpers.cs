@@ -7,6 +7,23 @@ namespace ISCED_Benguela.Encapsulamento
 {
     public static class HtmlHelpers
     {
+
+       
+            public static string IsActive(this IHtmlHelper htmlHelper, string page, string area = "")
+            {
+                var routeData = htmlHelper.ViewContext.RouteData;
+                var currentArea = routeData.Values["area"] as string ?? string.Empty;
+                var currentPage = routeData.Values["page"] as string ?? string.Empty;
+
+                if (string.Equals(currentPage, page, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(currentArea, area, StringComparison.OrdinalIgnoreCase))
+                {
+                    return "active";
+                }
+
+                return string.Empty;
+            }
+    
         public static string SweetAlert(this IHtmlHelper htmlHelper, string message,string Titulo, alertType Tipo)
         {
             var alert = string.Empty;

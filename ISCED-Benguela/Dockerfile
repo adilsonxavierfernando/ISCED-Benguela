@@ -6,6 +6,8 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
+VOLUME ["/app"]
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
@@ -22,4 +24,8 @@ RUN dotnet publish "./ISCED-Benguela.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+RUN chown -R app:app /app
+USER app
+
 ENTRYPOINT ["dotnet", "ISCED-Benguela.dll"]

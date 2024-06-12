@@ -21,7 +21,7 @@
                 {
                     @foreach (var item in Model.MateriaList)
                     {
-                        var resumido = item.Conteudo.Length > 100 ? item.Conteudo.Substring(0, 100) : item.Conteudo;
+                        var resumido = item.Conteudo.Length > 120 ? item.Conteudo.Substring(0, 120) : item.Conteudo;
                         string dataFormatada = item.DataPublicacao.ToString("dd 'de' MMMM 'de' yyyy");
                         <div class="col-md-6 d-flex align-items-stretch">
                             <div class="card">

@@ -4,6 +4,7 @@ using ISCED_Benguela.Modelos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 
 namespace ISCED_Benguela.Pages.Materias
@@ -38,9 +39,34 @@ namespace ISCED_Benguela.Pages.Materias
             DepartamentoList = await departamento.GetDepartamentosAsync();
             CursoList = await curso.GetCursosAsync();
             EstudanteList = await estudante.GetEstudantesAsync();
-            if (id > 0)
+            if (id == 0)
             {
-                MateriaList = (await materia.GetMateriaAsync()).Where(x => x.Visivel).ToList();
+                int idUser = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                var e=await estudante.GetEstudantesByAsync(idUser);
+                if(e is not null)
+                {
+                    MateriaList = (await materia.GetMateriaAsync()).Where(x => x.Visivel && x.DepartamentosID ==e.Curso.DepartamentoID).ToList();
+                    foreach (var item in DepartamentoList)
+                    {
+                        item.isPrincipal = false;
+                        if (item.ID == e.Curso.DepartamentoID)
+                            item.isPrincipal = true;
+                    }
+                }else
+                {
+                    var p = await professor.GetProfessorByIdAsync(idUser);
+                    if(p is not null)
+                    {
+                       MateriaList = (await materia.GetMateriaAsync()).Where(x => x.Visivel && x.DepartamentosID == p.DepartamentosID).ToList();
+                        foreach (var item in DepartamentoList)
+                        {
+                            item.isPrincipal = false;
+                            if (item.ID == p.DepartamentosID)
+                                item.isPrincipal = true;
+                        }
+                    }
+                        
+                }
 
             }
             else
